@@ -1,0 +1,100 @@
+{
+  "stats": {
+    "pageViews": 146,
+    "whatsappClicks": 5,
+    "manualWhatsappAdjustment": 0,
+    "salesClosed": 0,
+    "totalRevenue": 0
+  },
+  "meetings": [],
+  "salesList": [],
+  "whatsappLogs": [
+    {
+      "id": "wa-1794504510177",
+      "source": "Floating WhatsApp Icon",
+      "timestamp": "১২/১১/২০২৬, ১১:২৮:৩০ PM",
+      "ip": "::1"
+    },
+    {
+      "id": "wa-1794503550241",
+      "source": "Navbar WhatsApp Button",
+      "timestamp": "১২/১১/২০২৬, ১১:১২:৩০ PM",
+      "ip": "::1"
+    },
+    {
+      "id": "wa-1792781726955",
+      "source": "Pricing Order WhatsApp CTA",
+      "timestamp": "২৪/১০/২০২৬, ১২:৫৫:২৬ AM",
+      "ip": "::1"
+    },
+    {
+      "id": "wa-1792780342864",
+      "source": "Floating WhatsApp Icon",
+      "timestamp": "২৪/১০/২০২৬, ১২:৩২:২২ AM",
+      "ip": "::1"
+    },
+    {
+      "id": "wa-1792780050088",
+      "source": "Floating WhatsApp Icon",
+      "timestamp": "২৪/১০/২০২৬, ১২:২৭:৩০ AM",
+      "ip": "::1"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-1",
+      "name": "মো: রাকিব হাসান",
+      "role": "ফাউন্ডার, ফ্যাশন মার্ট বিডি",
+      "headline": "ফেইক অর্ডার ৯৮% কমে গেছে এবং অ্যাডের CPR অর্ধেকে নেমে এসেছে!",
+      "comment": "আগে প্রতিদিন ২০-২৫টা ভুয়া অর্ডার আসতো। ভাইদের এই সার্ভিস নেওয়ার পর বট এবং ফেইক অর্ডার একদম বন্ধ!",
+      "youtubeId": "dQw4w9WgXcQ",
+      "rating": 5
+    },
+    {
+      "id": "rev-2",
+      "name": "তানভীর আহমেদ",
+      "role": "ওনার, গ্যাজেট হাব",
+      "headline": "অ্যাবানডন্ড কার্ট থেকে প্রতিদিন ১০+ এক্সট্রা অর্ডার কনফার্ম করছি!",
+      "comment": "কাস্টমার নাম্বার লিখে পেজ কেটে দিলেও সাথে সাথে নাম্বার পেয়ে যাই। কল দিলেই অর্ডার কনফার্ম হয়!",
+      "youtubeId": "dQw4w9WgXcQ",
+      "rating": 5
+    },
+    {
+      "id": "rev-3",
+      "name": "শাফিন চৌধুরী",
+      "role": "অর্গানিক ফুড স্টোর",
+      "headline": "Ordered_Customers_Visit ইভেন্ট দিয়ে রিটার্গেটিং করে বাজিমাত!",
+      "comment": "পুরাতন কাস্টমার সাইটে আসলেই ট্র্যাক করতে পারছি, আর Stape.io-এর মাসিক ২০ ডলারও বেঁচে গেছে।",
+      "youtubeId": "dQw4w9WgXcQ",
+      "rating": 5
+    },
+    {
+      "id": "rev-4",
+      "name": "মাহমুদুল হাসান",
+      "role": "সিইও, ডেইলি নিডস বিডি",
+      "headline": "অর্ডার ডেটা এক্সট্রাকশন ও UTM ট্র্যাকিং আমাদের ক্যাম্পেইন সহজ করে দিয়েছে!",
+      "comment": "কোন প্রোডাক্টে কত তারিখ থেকে কত তারিখে কত অর্ডার আসছে তা ১ ক্লিকেই বের করতে পারছি। অসাধারণ সাপোর্ট!",
+      "youtubeId": "dQw4w9WgXcQ",
+      "rating": 5
+    }
+  ],
+  "metaTracking": {
+    "enabled": false,
+    "pixelId": "1364021745113504",
+    "accessToken": "EAAKOeKxJwGUBTCwuKggWdGAgMqodke0LRqzty2Q5f37zMaLsb7y3lZAyY8JLeGMZAIrBK0SHZBss51hNtHFMZBWhLZCQBpz7wNNHqiZAKyDZCHPiZB9NAApXZBrNURMYtZBEVQfuNvotZBqmiAxlAsZCUgUeVSXwtSTstfmaXLFpohE35uVrrZBbuBFqcLNtuHJR9IwZDZD",
+    "testEventCode": "TEST70704",
+    "apiVersion": "v21.0",
+    "pageViewEnabled": true,
+    "scrollEnabled": true,
+    "scrollPercent": 50,
+    "timeEnabled": true,
+    "timeSeconds": 25,
+    "whatsappEnabled": true,
+    "eventNames": {
+      "pageView": "PageView",
+      "scroll": "50%_Scroll",
+      "timeOnPage": "25S_TimeOnPage",
+      "whatsapp": "Wp_Contact"
+    }
+  }
+}

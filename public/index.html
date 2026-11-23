@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Pixel Pro - বাংলাদেশের সেরা অ্যাডভান্সড ট্র্যাকিং, ডেটা এক্সট্রাকশন ও ফ্রড প্রটেকশন সার্ভিস</title>
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        bangla: ['Hind Siliguri', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(90deg, #1d4ed8, #7c3aed, #db2777);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #5b21b6 50%, #9d174d 100%);
+        }
+        .gradient-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+        }
+        .glow-badge:hover {
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+        }
+        .money-back-guarantee {
+            position: relative;
+            isolation: isolate;
+            background: linear-gradient(135deg, #ecfdf5 0%, #eff6ff 100%);
+            border: 2px solid #34d399;
+            box-shadow: 0 12px 30px -14px rgba(16, 185, 129, 0.55);
+        }
+        .money-back-guarantee::before,
+        .money-back-guarantee::after {
+            content: "✦";
+            position: absolute;
+            color: #f59e0b;
+            font-size: 1.15rem;
+            z-index: -1;
+        }
+        .money-back-guarantee::before {
+            top: 0.45rem;
+            left: 0.8rem;
+            transform: rotate(-15deg);
+        }
+        .money-back-guarantee::after {
+            right: 0.8rem;
+            bottom: 0.45rem;
+            transform: rotate(15deg);
+        }
+        .guarantee-seal {
+            background: linear-gradient(135deg, #059669, #0f766e);
+            box-shadow: 0 8px 18px -8px rgba(5, 150, 105, 0.8);
+        }
+        .guarantee-sticky {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            z-index: 45;
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: flex-start;
+            transform: translateY(-50%);
+        }
+        .guarantee-sticky-tab {
+            width: 1.45rem;
+            min-height: 9.5rem;
+            position: relative;
+            z-index: 3;
+            border: 0;
+            border-radius: 0 0.9rem 0.9rem 0;
+            background: linear-gradient(160deg, #022c22, #064e3b 52%, #065f46);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            letter-spacing: 0.08em;
+            line-height: 1;
+            transition: background 0.3s ease;
+        }
+        .guarantee-sticky-tab:hover {
+            background: linear-gradient(160deg, #064e3b, #047857 52%, #065f46);
+        }
+        .guarantee-sticky-panel {
+            width: min(17rem, calc(100vw - 3.5rem));
+            height: 9.5rem;
+            box-sizing: border-box;
+            flex: 0 0 auto;
+            margin-right: 0;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: -5px 8px 0 rgba(6, 78, 59, 0.18), -8px 14px 22px rgba(15, 23, 42, 0.14);
+            border: 3px solid #064e3b;
+            border-radius: 1.45rem 1.45rem 0.55rem 1.45rem;
+            position: relative;
+            opacity: 0;
+            transform: translateX(100%) translateY(1.25rem);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .guarantee-sticky-panel::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: -0.75rem;
+            width: 1.35rem;
+            height: 1.35rem;
+            background: rgba(255, 255, 255, 0.94);
+            border-top: 3px solid #064e3b;
+            border-right: 3px solid #064e3b;
+            transform: translateY(-50%) rotate(45deg);
+            z-index: -1;
+        }
+        .guarantee-sticky.is-open .guarantee-sticky-panel {
+            opacity: 1;
+            transform: translateX(-1rem) translateY(0);
+            pointer-events: auto;
+        }
+        @media (max-width: 640px) {
+            .guarantee-sticky {
+                transform: translateY(-50%);
+            }
+            .guarantee-sticky-tab {
+                width: 1.3rem;
+                height: 9rem;
+                padding: 0.3rem 0.15rem;
+                font-size: 0.58rem;
+            }
+            .guarantee-sticky-panel {
+                width: min(15rem, calc(100vw - 3.25rem));
+                min-height: 9rem;
+                padding: 0.75rem;
+            }
+        }
+        /* GPU Accelerated Lightweight Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-float { animation: floatSlow 3.5s ease-in-out infinite; }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+            50% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+        }
+        .pulse-emerald { animation: pulseGlow 2s infinite; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-600 selection:text-white overflow-x-hidden">
+
+    <!-- Top Offer Bar with Live Evergreen Countdown -->
+    <div class="gradient-bg text-white py-2.5 px-3 text-xs sm:text-sm md:text-base font-medium shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-center">
+            <span>🚀 <strong>স্পেশাল লঞ্চিং অফার: মাত্র ৩,৪৯৯৳!</strong> (৩ দিন পর রেগুলার প্রাইস ৫,৫০০৳ হবে)</span>
+            <span class="inline-flex items-center gap-1.5 bg-slate-900/50 border border-white/20 px-3 py-0.5 rounded-full text-amber-300 font-bold text-xs sm:text-sm">
+                ⏳ সময় বাকি: <span id="top-countdown" class="font-mono tracking-wider text-white">02d : 23h : 59m : 59s</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Sticky Navbar -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl gradient-bg flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg shrink-0">B</div>
+                <span class="font-bold text-lg sm:text-2xl tracking-tight text-slate-900 whitespace-nowrap">Backend Pixel <span class="text-indigo-600">Pro</span></span>
+            </div>
+            <div class="hidden xl:flex items-center space-x-5 font-semibold text-slate-600 text-sm">
+                <a href="#unique-events" class="hover:text-indigo-600 transition">ইউনিক পিক্সেল ও ২৯+ প্যারামিটার</a>
+                <a href="#deep-features" class="hover:text-indigo-600 transition">অল-ইন-ওয়ান ফিচার</a>
+                <a href="#order-extractor" class="hover:text-indigo-600 transition">অর্ডার ডেটা এক্সট্রাক্টর</a>
+                <a href="#fraud-shield" class="hover:text-indigo-600 transition">৪-স্তরের ফ্রড শিল্ড</a>
+                <a href="#reviews" class="hover:text-indigo-600 transition">ক্লায়েন্ট রিভিউ</a>
+                <a href="#book-meeting" class="text-indigo-600 font-bold hover:underline">📅 ফ্রি মিটিং বুকিং</a>
+                <a href="#pricing" class="text-rose-600 font-bold">লঞ্চিং অফার (৳৩,৪৯৯)</a>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="#book-meeting" class="hidden sm:inline-flex bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition whitespace-nowrap">
+                    📅 মিটিং বুক করুন
+                </a>
+                <a href="https://wa.me/+8801521771966?text=হ্যালো ভাই, আমি ৩,৪৯৯ টাকার লঞ্চিং অফারে আপনাদের ট্র্যাকিং এবং ফেইক অর্ডার ব্লকিং সার্ভিসটি সম্পর্কে জানতে চাচ্ছি।" target="_blank" onclick="trackWhatsApp('Navbar WhatsApp Button')" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-bold shadow-lg shadow-emerald-500/20 transition flex items-center gap-1.5 text-xs sm:text-sm whitespace-nowrap">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+                    হোয়াটসঅ্যাপ
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. HERO SECTION -->
+    <section class="relative pt-8 sm:pt-12 pb-16 sm:pb-20 bg-white border-b border-slate-200 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <!-- Fixed Responsive Top Badge (No weird column wrapping on mobile!) -->
+            <div class="inline-block max-w-2xl mx-auto py-2 px-4 sm:px-5 rounded-2xl md:rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-xs sm:text-sm mb-6 leading-relaxed shadow-sm animate-float">
+                ⚡ এটি শুধু প্লাগইন নয় — ১০০% অ্যাডভান্সড ট্র্যাকিং, ডেটা এক্সট্রাকশন ও আজীবন ফেইক অর্ডার বন্ধের কমপ্লিট সার্ভিস!
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-5 sm:mb-6 leading-snug md:leading-tight">
+                পিক্সেলে পাঠান <span class="gradient-text">এক্সক্লুসিভ ইউনিক ডেটা</span>, <br class="hidden md:block">
+                ফেইক অর্ডার করুন চিরতরে বন্ধ এবং CPR কমান!
+            </h1>
+
+            <p class="max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-slate-600 mb-8 leading-relaxed px-1">
+                সাধারণ ব্রাউজার বা সার্ভার ট্র্যাকিং সবাই করে! কিন্তু <strong>কাস্টমার কতবার সাইটে আসলো, আগে কত টাকার অর্ডার করেছে, নতুন নাকি পুরাতন কাস্টমার</strong>—এই ইউনিক ডেটাগুলো একমাত্র আমরাই পিক্সেলে পাঠাই। সাথে থাকছে <strong>অর্ডার ডেটা এক্সট্রাক্টর, ডোমেইন ভেরিফিকেশন ও ৪-স্তরের ফ্রড প্রটেকশন!</strong>
+            </p>
+
+            <!-- FRONT PAGE UNIQUE FEATURE PILLS (Clean & Responsive on Mobile) -->
+            <div class="max-w-5xl mx-auto mb-10 sm:mb-12">
+                <p class="text-xs sm:text-sm font-bold text-indigo-600 mb-3">👇 আমাদের যে ইউনিক প্রযুক্তিগুলো অন্য কারো কাছে নেই (ট্যাপ করে সরাসরি দেখুন):</p>
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-2.5">
+                    <a href="#unique-events" class="glow-badge bg-slate-900 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-slate-700 transition">
+                        👑 Ordered_Customers_Visit ইভেন্ট
+                    </a>
+                    <a href="#unique-events" class="glow-badge bg-indigo-50 text-indigo-900 hover:bg-indigo-100 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-indigo-200 transition">
+                        🔄 ২য়, ৩য় ও মাল্টিপল ভিজিট ডিটেকশন
+                    </a>
+                    <a href="#unique-events" class="glow-badge bg-purple-50 text-purple-900 hover:bg-purple-100 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-purple-200 transition">
+                        💰 ২৯+ ডিপ প্যারামিটার (Lifetime Value & Visit)
+                    </a>
+                    <a href="#order-extractor" class="glow-badge bg-teal-50 text-teal-900 hover:bg-teal-100 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-teal-200 transition">
+                        📥 প্রোডাক্ট ও তারিখ অনুযায়ী অর্ডার এক্সট্রাক্টর
+                    </a>
+                    <a href="#fraud-shield" class="glow-badge bg-rose-50 text-rose-900 hover:bg-rose-100 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-rose-200 transition">
+                        🛡️ নো-ফিঙ্গারপ্রিন্ট SDI ব্লকার + বট হানিট্র্যাপ
+                    </a>
+                    <a href="#deep-features" class="glow-badge bg-emerald-50 text-emerald-900 hover:bg-emerald-100 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-emerald-200 transition">
+                        🛒 রিয়েল-টাইম অ্যাবানডন্ড কার্ট ক্যাপচার
+                    </a>
+                    <a href="#deep-features" class="glow-badge bg-blue-50 text-blue-900 hover:bg-blue-100 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-blue-200 transition">
+                        🌐 ওয়ান-ক্লিক ডোমেইন ভেরিফিকেশন, GA4, Clarity ও UTM
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 mb-12 sm:mb-14">
+                <a href="https://wa.me/+8801521771966?text=হ্যালো ভাই, আমি ৩,৪৯৯ টাকার লঞ্চিং অফারে আপনাদের সার্ভিসটি নিতে চাই।" target="_blank" onclick="trackWhatsApp('Hero Primary WhatsApp CTA')" class="pulse-emerald w-full sm:w-auto px-6 sm:px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-base sm:text-lg shadow-xl transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2.5">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+                    <span>হোয়াটসঅ্যাপে মেসেজ দিন (লঞ্চিং অফার: ৩,৪৯৯৳)</span>
+                </a>
+                <a href="#book-meeting" class="w-full sm:w-auto px-6 sm:px-8 py-4 rounded-2xl gradient-bg hover:opacity-95 text-white font-bold text-base sm:text-lg shadow-xl shadow-indigo-600/25 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    📅 ১-টু-১ ফ্রি ডেমো মিটিং বুক করুন
+                </a>
+            </div>
+
+            <!-- Main Overview YouTube Video -->
+            <div class="max-w-4xl mx-auto">
+                <div class="p-2 md:p-4 bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 rounded-3xl shadow-2xl">
+                    <div class="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden bg-slate-900">
+                        <iframe loading="lazy" class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Backend Pixel Pro Complete Overview" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <p class="mt-4 text-xs sm:text-sm text-slate-600 font-semibold">🎥 ৫ মিনিটের এই ভিডিওটি দেখুন: কীভাবে আমাদের ইউনিক পিক্সেল ডেটা ও ফ্রড শিল্ড আপনার ব্যবসার লস বন্ধ করবে</p>
+                <div class="money-back-guarantee mt-6 rounded-3xl p-4 sm:p-5 flex items-center gap-3 sm:gap-5 text-left animate-float">
+                    <div class="guarantee-seal shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-white flex flex-col items-center justify-center text-white text-center">
+                        <span class="text-xl sm:text-2xl font-extrabold leading-none">৭</span>
+                        <span class="text-[10px] sm:text-xs font-bold leading-tight">দিনের<br>গ্যারান্টি</span>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-xl font-extrabold text-emerald-800 leading-snug">✅ ৭ দিনের মানি-ব্যাক গ্যারান্টি</h3>
+                        <p class="mt-1 text-xs sm:text-sm text-slate-700 leading-relaxed">প্লাগইনটি আপনার সমস্যার সমাধান করতে না পারলে, সেটআপের তারিখ থেকে ৭ দিনের মধ্যে যেকোনো সময় মানি-ব্যাক নিতে পারবেন—তাই নিশ্চিন্তে শুরু করুন!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. THE SECRET SAUCE: ALL EXCLUSIVE EVENTS VISIBLE + 29+ DEEP PARAMETERS HIGHLIGHT -->
+    <section id="unique-events" class="py-16 sm:py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-4xl mx-auto mb-12 sm:mb-16 reveal">
+                <span class="inline-block bg-amber-500/20 text-amber-300 border border-amber-400/30 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider">🔥 আমাদের সিক্রেট ওয়েপন (অন্য কারো কাছে নেই)</span>
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold mt-4 mb-5 leading-snug md:leading-tight">
+                    সাধারণ ইভেন্ট তো সবাই পাঠায়, কিন্তু <span class="text-amber-400">আমরা মেটা পিক্সেলকে দেই ১০+ ইউনিক ইভেন্ট ও ২৯+ ডিপ প্যারামিটার!</span>
+                </h2>
+                <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                    মানুষ শুধু PageView, AddToCart আর Purchase পাঠায়। কিন্তু আমাদের প্লাগইন ইউজারের বিহেভিয়ার এবং হিস্ট্রি অ্যানালাইসিস করে নিচের প্রতিটি <strong>ইউনিক ইভেন্ট এবং ২৯+ ডিপ প্যারামিটার</strong> ফেসবুকে পাঠায়—যার কারণে আপনার অ্যাড কস্ট (CPR) কমতে বাধ্য!
+                </p>
+            </div>
+
+            <!-- ALL EXCLUSIVE EVENTS VISIBLE AT ONCE -->
+            <div class="mb-14">
+                <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
+                    <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center gap-2.5">
+                        <span>🎯</span> <span>আমাদের এক্সক্লুসিভ কাস্টম বিহেভিয়ার ইভেন্টসমূহ</span>
+                    </h3>
+                    <span class="bg-indigo-600/30 border border-indigo-400/40 text-indigo-200 text-xs font-bold px-3.5 py-1.5 rounded-full">সবগুলো ইভেন্ট অটোমেটিক কাজ করে!</span>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Event Card 1 -->
+                    <div class="bg-gradient-to-br from-indigo-950 to-slate-900 border-2 border-amber-400/60 rounded-3xl p-6 shadow-xl relative overflow-hidden reveal">
+                        <span class="bg-amber-400 text-slate-900 text-xs font-extrabold px-3 py-1 rounded-full uppercase">সবচেয়ে পাওয়ারফুল ইভেন্ট</span>
+                        <h4 class="text-lg sm:text-xl font-bold text-amber-300 mt-4 mb-2 font-mono break-words">👑 Ordered_Customers_Visit</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            যে কাস্টমার আপনার ওয়েবসাইট থেকে আগে কখনো অর্ডার করেছে, সে যদি আবার আপনার সাইটে ভিজিট করে, সাথে সাথে এই ইভেন্ট ফায়ার হবে! পুরাতন ক্রেতাদের আলাদা কাস্টম অডিয়েন্স বানিয়ে নতুন প্রোডাক্টের অ্যাড দেখালে ১০ গুণ বেশি সেল পাবেন।
+                        </p>
+                    </div>
+
+                    <!-- Event Card 2 -->
+                    <div class="bg-slate-800/80 border border-slate-700 hover:border-indigo-400 rounded-3xl p-6 transition reveal">
+                        <span class="bg-indigo-500/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full">ভিজিট ফ্রিকোয়েন্সি ট্র্যাকার</span>
+                        <h4 class="text-lg sm:text-xl font-bold text-white mt-4 mb-2 font-mono break-words">🔄 1st, 2nd, 3rd & Multiple Visit</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            ভিজিটর কি প্রথমবার আসলো (<code class="text-indigo-300">New_Visitor</code>)? নাকি ২য় বার (<code class="text-indigo-300">Visit_Second_Time</code>), ৩য় বার (<code class="text-indigo-300">Visit_Third_Time</code>) বা তার বেশি (<code class="text-indigo-300">Visit_Multiple_Times</code>)? যারা বারবার সাইটে আসছে কিন্তু কিনছে না, তাদের ডিসকাউন্ট অ্যাড দেখিয়ে সহজেই কনভার্ট করুন!
+                        </p>
+                    </div>
+
+                    <!-- Event Card 3 -->
+                    <div class="bg-slate-800/80 border border-slate-700 hover:border-emerald-400 rounded-3xl p-6 transition reveal">
+                        <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-3 py-1 rounded-full">হাই-ইনটেন্ট বায়ার ডিটেকশন</span>
+                        <h4 class="text-lg sm:text-xl font-bold text-emerald-300 mt-4 mb-2 font-mono break-words">⭐ check_review ইভেন্ট</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            শুধুমাত্র সিরিয়াস ক্রেতারাই প্রোডাক্ট কেনার আগে রিভিউ চেক করে! যখনই কোনো কাস্টমার প্রোডাক্টের রিভিউ ট্যাবে ক্লিক করবে, তখনই <code class="text-emerald-300">check_review</code> ইভেন্ট ফায়ার হবে। এদের রিটার্গেট করলে আরওআই (ROI) থাকে সর্বোচ্চ!
+                        </p>
+                    </div>
+
+                    <!-- Event Card 4 -->
+                    <div class="bg-slate-800/80 border border-slate-700 hover:border-purple-400 rounded-3xl p-6 transition reveal">
+                        <span class="bg-purple-500/20 text-purple-300 text-xs font-bold px-3 py-1 rounded-full">কার্ট ইন্টেলিজেন্স</span>
+                        <h4 class="text-lg sm:text-xl font-bold text-purple-300 mt-4 mb-2 font-mono break-words">🛒 view_cart & remove_from_cart</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            কে কার্ট পেজ ভিজিট করলো (<code class="text-purple-300">view_cart</code>) এবং কে কার্ট থেকে প্রোডাক্ট ডিলিট করলো (<code class="text-purple-300">remove_from_cart</code>)—উভয়ই প্রোডাক্টের নাম, দাম ও আইডিসহ মেটা পিক্সেল এবং সার্ভারে চলে যায়।
+                        </p>
+                    </div>
+
+                    <!-- Event Card 5 -->
+                    <div class="bg-slate-800/80 border border-slate-700 hover:border-pink-400 rounded-3xl p-6 transition reveal">
+                        <span class="bg-pink-500/20 text-pink-300 text-xs font-bold px-3 py-1 rounded-full">এনগেজমেন্ট ফিল্টার</span>
+                        <h4 class="text-lg sm:text-xl font-bold text-pink-300 mt-4 mb-2 font-mono break-words">⏱️ Time_30s & Scroll_50_Percent</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            যারা ভুল করে ক্লিক করে ২ সেকেন্ডেই বের হয়ে যায় তাদের বাদ দিয়ে, যারা অন্তত ৩০ সেকেন্ড সাইটে থাকে এবং ৫০% পেজ স্ক্রল করে পড়ে, তাদের আলাদাভাবে ট্র্যাক করে মেটার অ্যালগরিদমকে ট্রেইন করা হয়।
+                        </p>
+                    </div>
+
+                    <!-- Event Card 6 -->
+                    <div class="bg-slate-800/80 border border-slate-700 hover:border-cyan-400 rounded-3xl p-6 transition reveal">
+                        <span class="bg-cyan-500/20 text-cyan-300 text-xs font-bold px-3 py-1 rounded-full">স্ট্যান্ডার্ড + সার্ভার ইভেন্টস</span>
+                        <h4 class="text-lg sm:text-xl font-bold text-cyan-300 mt-4 mb-2 font-mono break-words">⚡ PageView, ViewContent, AddToCart, InitiateCheckout, Purchase</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            ফেসবুকের স্ট্যান্ডার্ড সব ইভেন্ট ১০০% নিখুঁতভাবে ব্রাউজার এবং সার্ভার-সাইড (CAPI) থেকে ইউনিক <code class="text-cyan-300">event_id</code> ডিডুপ্লিকেশনসহ ফায়ার হয়।
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 29+ DEEP DATA PARAMETERS HIGHLIGHT BOARD -->
+            <div class="bg-gradient-to-r from-slate-800 via-indigo-950/80 to-slate-800 border-2 border-indigo-500/40 rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl reveal">
+                <div class="text-center max-w-3xl mx-auto mb-8">
+                    <span class="bg-indigo-500 text-white text-xs font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider">🧬 ২৯+ ডিপ প্যারামিটার হাইলাইট</span>
+                    <h3 class="text-xl sm:text-2xl md:text-4xl font-bold text-white mt-3 leading-snug">প্রতিটি ইভেন্টের ভেতরে আমরা যে ২৯+ গোপন ডেটা পিক্সেলে পাঠাই</h3>
+                    <p class="text-slate-300 text-xs sm:text-sm mt-2">এই প্যারামিটারগুলোর কারণেই আপনার Event Match Quality (EMQ) থাকে 9.5/10 এবং ফেসবুক ঠিক আপনার ক্রেতাদের মতো মানুষদের খুঁজে বের করে:</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Column 1: Customer Lifetime & Loyalty -->
+                    <div class="bg-slate-900/90 p-5 sm:p-6 rounded-2xl border border-indigo-500/30">
+                        <h4 class="font-bold text-amber-400 text-base sm:text-lg mb-3">💎 ১. কাস্টমার লাইফটাইম ও লয়্যালটি প্যারামিটার</h4>
+                        <p class="text-xs text-slate-400 mb-4">এই ভিজিটর আগে কত টাকার অর্ডার করেছে এবং কতবার এসেছে তার নিখুঁত হিসাব:</p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs">
+                            <span class="bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg">lifetime_order_value: 4500 BDT</span>
+                            <span class="bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2.5 py-1.5 rounded-lg">lifetime_orders_amount: 3</span>
+                            <span class="bg-amber-950 text-amber-300 border border-amber-500/40 px-2.5 py-1.5 rounded-lg">visit_count: 5</span>
+                            <span class="bg-pink-950 text-pink-300 border border-pink-500/40 px-2.5 py-1.5 rounded-lg">new_customer: true / false</span>
+                            <span class="bg-slate-800 text-slate-200 px-2.5 py-1.5 rounded-lg">customer_history_status</span>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Product, Payment & Order Intelligence -->
+                    <div class="bg-slate-900/90 p-5 sm:p-6 rounded-2xl border border-indigo-500/30">
+                        <h4 class="font-bold text-indigo-300 text-base sm:text-lg mb-3">🛍️ ২. অর্ডার, পেমেন্ট ও প্রোডাক্ট ইন্টেলিজেন্স</h4>
+                        <p class="text-xs text-slate-400 mb-4">কাস্টমার কীভাবে পেমেন্ট করে, ডিসকাউন্ট নিচ্ছে কিনা এবং প্রোডাক্টের সব ডেটা:</p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-200">
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">payment_method (bKash/COD)</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">shipping_charge</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">coupon & discount_total</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">product_average_rating</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">stock_level & SKU</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">content_ids & contents</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">category_name</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">num_items & currency</span>
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Advanced EMQ 9.5/10 & Attribution -->
+                    <div class="bg-slate-900/90 p-5 sm:p-6 rounded-2xl border border-indigo-500/30">
+                        <h4 class="font-bold text-emerald-400 text-base sm:text-lg mb-3">⚡ ৩. হাইয়েস্ট ম্যাচ কোয়ালিটি (EMQ 9.5/10) প্যারামিটার</h4>
+                        <p class="text-xs text-slate-400 mb-4">ফেসবুক সার্ভারের সাথে কাস্টমার প্রোফাইল ১০০% ম্যাচিং করার প্যারামিটার:</p>
+                        <div class="flex flex-wrap gap-2 font-mono text-xs text-slate-200">
+                            <span class="bg-indigo-950 text-indigo-200 border border-indigo-500/40 px-2.5 py-1.5 rounded-lg">event_id (Deduplication)</span>
+                            <span class="bg-indigo-950 text-indigo-200 border border-indigo-500/40 px-2.5 py-1.5 rounded-lg">fbp & fbc cookies</span>
+                            <span class="bg-indigo-950 text-indigo-200 border border-indigo-500/40 px-2.5 py-1.5 rounded-lg">external_id (SDI Hash)</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">client_ip_address</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">client_user_agent</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">customer_location (City/Country)</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">device_type & OS</span>
+                            <span class="bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg">SHA-256 Hashed Phone/Email</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. BYPASSING THE TAB PROBLEM: AUTO-PLAYING SPOTLIGHT + ALL FEATURES VISIBLE IN DETAIL -->
+    <section id="deep-features" class="py-16 sm:py-24 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-4xl mx-auto mb-12 reveal">
+                <span class="inline-block bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm uppercase">🚀 ৬টি পাওয়ারহাউস মডিউল (অটো-স্লাইড + ফুল ভিউ)</span>
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mt-4 mb-4 leading-snug">আমাদের প্রতিটি ফিচার কীভাবে আপনার সেলস বাড়ায় দেখুন</h2>
+                <p class="text-slate-600 text-base sm:text-lg">
+                    আপনি নিচের অটো-রানিং স্লাইডশোতে ক্লিক করে বা অপেক্ষা করে দেখতে পারেন, অথবা নিচে স্ক্রল করে <strong>একসাথে সবগুলো ফিচারের ইন-ডিটেইল বর্ণনা</strong> পড়তে পারেন!
+                </p>
+            </div>
+
+            <!-- Interactive Auto-Advancing Spotlight Carousel -->
+            <div class="bg-slate-900 text-white rounded-3xl p-5 sm:p-6 md:p-10 shadow-2xl mb-16 border border-slate-800" onmouseenter="pauseSpotlight(true)" onmouseleave="pauseSpotlight(false)">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <div class="flex items-center gap-2 text-xs md:text-sm font-bold text-amber-400">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
+                        <span>অটো-স্পটলাইট চলছে (ফিচার <span id="spot-counter">১/৬</span>) — যেকোনো বাটনে ট্যাপ করুন</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="prevSpotlight()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold border border-slate-700">⬅ পূর্ববর্তী</button>
+                        <button onclick="nextSpotlight()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-bold">পরবর্তী ফিচার ➡</button>
+                    </div>
+                </div>
+
+                <!-- Auto Progress Bar -->
+                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-6">
+                    <div id="spot-progress" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-full transition-all duration-100" style="width: 0%"></div>
+                </div>
+
+                <!-- Step Indicator Pills -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-6 sm:mb-8">
+                    <button onclick="goToSpotlight(0)" class="spot-tab px-3 py-2.5 rounded-xl text-xs font-bold text-left border transition">১. 🛒 অ্যাবানডন্ড কার্ট</button>
+                    <button onclick="goToSpotlight(1)" class="spot-tab px-3 py-2.5 rounded-xl text-xs font-bold text-left border transition">২. 📥 অর্ডার এক্সট্রাক্টর</button>
+                    <button onclick="goToSpotlight(2)" class="spot-tab px-3 py-2.5 rounded-xl text-xs font-bold text-left border transition">৩. ⚡ সার্ভার CAPI ও স্পিড</button>
+                    <button onclick="goToSpotlight(3)" class="spot-tab px-3 py-2.5 rounded-xl text-xs font-bold text-left border transition">৪. 🌐 ডোমেইন ভেরিফিকেশন</button>
+                    <button onclick="goToSpotlight(4)" class="spot-tab px-3 py-2.5 rounded-xl text-xs font-bold text-left border transition">৫. 🎥 Clarity ও GA4</button>
+                    <button onclick="goToSpotlight(5)" class="spot-tab px-3 py-2.5 rounded-xl text-xs font-bold text-left border transition">৬. 🎯 অর্ডার UTM ট্র্যাকার</button>
+                </div>
+
+                <!-- Spotlight Dynamic Display -->
+                <div id="spotlight-body" class="bg-slate-800/70 border border-slate-700 rounded-2xl p-5 sm:p-6 md:p-8 min-h-[210px] flex flex-col justify-center">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- FULL IN-DETAIL CARDS -->
+            <div class="mb-8 text-center">
+                <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900">📖 প্রতিটি ফিচারের সম্পূর্ণ ইন-ডিটেইল গাইড (এক নজরে সবগুলো পড়ুন)</h3>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-6 sm:gap-8">
+                <!-- Detail Module 1: Live Abandoned Cart -->
+                <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border-2 border-emerald-200 shadow-md reveal">
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-xs font-extrabold uppercase">ফিচার ০১ • বিনা অ্যাড খরচে অতিরিক্ত সেলস</span>
+                        <span class="text-2xl sm:text-3xl shrink-0">🛒</span>
+                    </div>
+                    <h4 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">রিয়েল-টাইম সাইলেন্ট অ্যাবানডন্ড কার্ট ক্যাপচার</h4>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        চেকআউট পেজে এসে কাস্টমার নাম ও ফোন নাম্বার লেখার পর ডেলিভারি চার্জ দেখে বা যেকোনো কারণে অর্ডার না করেই পেজ কেটে দিলে আমাদের <code class="bg-white px-1.5 py-0.5 rounded border">sendBeacon</code> ও <code class="bg-white px-1.5 py-0.5 rounded border">visibilitychange</code> প্রযুক্তি নিঃশব্দে তার নাম, ফোন নাম্বার, কোন প্রোডাক্ট কিনতে চেয়েছিল, কত টাকা বিল এবং তার <code class="bg-white px-1.5 py-0.5 rounded border">fbp/SDI</code> আইডি আপনার ড্যাশবোর্ডে সেভ করে ফেলে!
+                    </p>
+                    <div class="p-4 rounded-2xl bg-slate-900 text-white text-xs space-y-1.5">
+                        <div class="flex flex-wrap justify-between gap-1"><span class="text-emerald-400 font-bold">📞 01712-XXXXXX (সাদিয়া ইসলাম)</span><span class="text-amber-300">২ মিনিট আগে পেজ কেটেছে</span></div>
+                        <div>প্রোডাক্ট: প্রিমিয়াম কম্বো প্যাক | বিল: ৳১,৮৫০ — <strong>জাস্ট ১টি কল দিয়েই অর্ডার কনফার্ম করুন!</strong></div>
+                    </div>
+                </div>
+
+                <!-- Detail Module 2: Server-Side CAPI & Action Scheduler -->
+                <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border-2 border-indigo-200 shadow-md reveal">
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-xs font-extrabold uppercase">ফিচার ০২ • নো Stape.io! আজীবন ফ্রি CAPI</span>
+                        <span class="text-2xl sm:text-3xl shrink-0">⚡</span>
+                    </div>
+                    <h4 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">ফার্স্ট-পার্টি সার্ভার CAPI ও জিরো-লেটেন্সি স্পিড</h4>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        থার্ড-পার্টি ডোমেইনের বদলে আমাদের নিজস্ব কাস্টম REST API (<code class="bg-white px-1.5 py-0.5 rounded border">/wp-json/bp/v1/sync</code>) সরাসরি ফার্স্ট-পার্টি ডেটা মেটা CAPI-তে পাঠায়, তাই কোনো AdBlocker বা iOS 14+ একে ব্লক করতে পারে না। আর <code class="bg-white px-1.5 py-0.5 rounded border">Action Scheduler</code> ব্যাকগ্রাউন্ডে কিউ আকারে ডেটা পাঠায় বলে আপনার সাইটের লোডিং স্পিড ১ মিলিসেকেন্ডও কমে না!
+                    </p>
+                    <div class="p-4 rounded-2xl bg-indigo-950 text-indigo-200 font-mono text-xs leading-relaxed">
+                        ✔ AdBlocker Bypass: 100% | ✔ Stape.io মাসিক ২০ ডলার খরচ সাশ্রয় | ✔ ১০০% ব্রাউজার + সার্ভার ডিডুপ্লিকেশন
+                    </div>
+                </div>
+
+                <!-- Detail Module 3: Microsoft Clarity & Google Analytics 4 -->
+                <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border-2 border-purple-200 shadow-md reveal">
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-extrabold uppercase">ফিচার ০৩ • লাইভ স্ক্রিন রেকর্ডিং ও অ্যানালিটিক্স</span>
+                        <span class="text-2xl sm:text-3xl shrink-0">🎥</span>
+                    </div>
+                    <h4 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">Microsoft Clarity ভিডিও হিটম্যাপ ও Google Analytics 4 (GA4)</h4>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Google Tag Manager (GTM)-এর জটিল কোডিং ছাড়াই শুধুমাত্র আপনার <strong>Clarity Project ID</strong> এবং <strong>GA4 Measurement ID</strong> বসিয়ে দিন!
+                    </p>
+                    <ul class="space-y-2 text-sm text-slate-700">
+                        <li>🎬 <strong>Microsoft Clarity:</strong> কাস্টমার সাইটে ঢুকে কোথায় ক্লিক করছে, কোথায় স্ক্রল করছে বা চেকআউটে কোথায় আটকে যাচ্ছে তার লাইভ ভিডিও রেকর্ডিং ও হিটম্যাপ দেখুন।</li>
+                        <li>📈 <strong>GA4 Auto-Sync:</strong> পিক্সেলের সব ইভেন্ট (<code class="bg-white px-1 rounded border">view_item</code>, <code class="bg-white px-1 rounded border">add_to_cart</code>, <code class="bg-white px-1 rounded border">purchase</code>) অটোমেটিক প্রোডাক্টের দামসহ GA4-এ চলে যাবে!</li>
+                    </ul>
+                </div>
+
+                <!-- Detail Module 4: UTM Order Attribution & Domain Verification -->
+                <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border-2 border-blue-200 shadow-md reveal">
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-extrabold uppercase">ফিচার ০৪ • ডোমেইন ভেরিফিকেশন ও UTM ট্র্যাকার</span>
+                        <span class="text-2xl sm:text-3xl shrink-0">🎯</span>
+                    </div>
+                    <h4 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">অর্ডারের ভেতর UTM ট্র্যাকিং এবং ওয়ান-ক্লিক ডোমেইন ভেরিফিকেশন</h4>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        ফেসবুক অ্যাডস ম্যানেজারে অনেক সময় সঠিক অ্যাট্রিবিউশন দেখা যায় না। আমাদের প্লাগইন প্রতিটি অর্ডার কোন <strong>UTM Campaign, UTM Adset এবং UTM Ad</strong> থেকে এসেছে তা সরাসরি ওয়ার্ডপ্রেসের অর্ডার মেটাডেটায় সেভ করে রাখে!
+                    </p>
+                    <div class="p-4 rounded-2xl bg-white border border-blue-200 text-xs space-y-1.5">
+                        <div class="font-bold text-indigo-700">🌐 বিল্ট-ইন মেটা ডোমেইন ভেরিফিকেশন (Domain Verification):</div>
+                        <p class="text-slate-600 leading-relaxed">থিমের <code class="bg-slate-100 px-1 rounded">header.php</code> ফাইলে হাত না দিয়ে সরাসরি আমাদের প্লাগইনের বক্সে মেটা ভেরিফিকেশন কোড বা মেটা-ট্যাগ বসিয়ে ১ ক্লিকে বিজনেস ম্যানেজারে ডোমেইন ভেরিফাই করতে পারবেন। থিম আপডেট হলেও কোড হারানোর ভয় নেই!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. NEW DEDICATED SECTION: ORDER DATA EXTRACTION TOOL -->
+    <section id="order-extractor" class="py-16 sm:py-24 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-10 sm:gap-12 items-center">
+                <div class="reveal">
+                    <span class="inline-block bg-teal-400/20 text-teal-300 border border-teal-400/40 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold uppercase">📥 নতুন সুপার পাওয়ারফুল টুল</span>
+                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold mt-4 mb-5 leading-snug md:leading-tight">
+                        অ্যাডভান্সড <span class="text-teal-400">অর্ডার ডেটা এক্সট্রাকশন টুল!</span> (প্রোডাক্ট ও তারিখ অনুযায়ী)
+                    </h2>
+                    <p class="text-slate-300 text-base sm:text-lg mb-6 leading-relaxed">
+                        ধরুন আপনি জানতে চান <strong>গত ১ তারিখ থেকে ১৫ তারিখের মধ্যে আপনার নির্দিষ্ট একটি প্রোডাক্ট কতজন মানুষ অর্ডার করেছে</strong> এবং তাদের ফোন নাম্বার, ইমেইল ও লোকেশন কী—আমাদের বিল্ট-ইন ডেটা এক্সট্রাকশন টুল দিয়ে ১ ক্লিকেই সেই পুরো ডেটা বের করে নিতে পারবেন!
+                    </p>
+                    <div class="space-y-4 text-sm text-slate-200">
+                        <div class="flex items-start gap-3 bg-slate-800/70 p-4 rounded-2xl border border-slate-700">
+                            <span class="text-xl shrink-0">🔍</span>
+                            <div>
+                                <strong class="text-teal-300">প্রোডাক্ট ও ডেট রেঞ্জ ফিল্টার:</strong> নির্দিষ্ট প্রোডাক্ট সিলেক্ট করুন, শুরুর তারিখ (Start Date) থেকে শেষের তারিখ (End Date) দিন এবং অর্ডার স্ট্যাটাস (Completed/Processing) বেছে নিন।
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 bg-slate-800/70 p-4 rounded-2xl border border-slate-700">
+                            <span class="text-xl shrink-0">📊</span>
+                            <div>
+                                <strong class="text-teal-300">কাস্টম অডিয়েন্স ও লুকএলাইক রেডি ডেটা:</strong> এক্সট্রাক্ট করা কাস্টমার লিস্ট (নাম, ফোন, ইমেইল, অর্ডার ভ্যালু, জেলা) সরাসরি CSV/Excel আকারে ডাউনলোড করে মেটা অ্যাডে Custom Audience বা 1% Lookalike Audience তৈরি করতে পারবেন, কিংবা SMS মার্কেটিং করতে পারবেন!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Visual Preview of the Order Extraction Tool -->
+                <div class="bg-slate-800 border-2 border-teal-500/40 rounded-3xl p-5 sm:p-6 md:p-8 shadow-2xl reveal">
+                    <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-700 pb-4 mb-6">
+                        <div>
+                            <span class="text-xs font-bold uppercase text-teal-400">লাইভ টুল সিমুলেটর</span>
+                            <h3 class="text-lg sm:text-xl font-bold text-white">Order Data Extractor — প্রিভিউ</h3>
+                        </div>
+                        <span class="bg-teal-500/20 text-teal-300 text-xs font-mono px-3 py-1 rounded-lg">CSV / Excel Ready</span>
+                    </div>
+
+                    <div class="grid sm:grid-cols-3 gap-3 mb-5 text-xs">
+                        <div class="bg-slate-900 p-3 rounded-xl border border-slate-700">
+                            <label class="text-slate-400 block mb-1">প্রোডাক্ট সিলেক্ট করুন:</label>
+                            <div class="font-bold text-white truncate">⌚ Ezplay Smart Watch Z1</div>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-xl border border-slate-700">
+                            <label class="text-slate-400 block mb-1">শুরুর তারিখ (From):</label>
+                            <div class="font-mono font-bold text-teal-300">01 Oct, 2026</div>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-xl border border-slate-700">
+                            <label class="text-slate-400 block mb-1">শেষ তারিখ (To):</label>
+                            <div class="font-mono font-bold text-teal-300">23 Oct, 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 rounded-2xl p-4 border border-slate-700 mb-5">
+                        <div class="flex flex-wrap justify-between items-center gap-2 text-xs text-slate-400 border-b border-slate-800 pb-2 mb-3">
+                            <span>মোট পাওয়া অর্ডার: <strong class="text-emerald-400 text-sm">১৮৪ জন কাস্টমার</strong></span>
+                            <span>মোট ভ্যালু: <strong class="text-amber-400 text-sm">৳৩,৪৯,৬০০</strong></span>
+                        </div>
+                        <div class="space-y-2 text-xs font-mono">
+                            <div class="flex flex-wrap justify-between gap-1 py-1.5 px-2 bg-slate-800/70 rounded">
+                                <span class="text-white">#4912 - আরিফ হোসেন</span>
+                                <span class="text-emerald-400">01711-XXXXXX</span>
+                                <span class="text-slate-300">Dhaka • ৳1,900</span>
+                            </div>
+                            <div class="flex flex-wrap justify-between gap-1 py-1.5 px-2 bg-slate-800/70 rounded">
+                                <span class="text-white">#4890 - নুসরাত জাহান</span>
+                                <span class="text-emerald-400">01819-XXXXXX</span>
+                                <span class="text-slate-300">Sylhet • ৳1,900</span>
+                            </div>
+                            <div class="flex flex-wrap justify-between gap-1 py-1.5 px-2 bg-slate-800/70 rounded">
+                                <span class="text-white">#4855 - কামরুল ইসলাম</span>
+                                <span class="text-emerald-400">01914-XXXXXX</span>
+                                <span class="text-slate-300">Khulna • ৳3,800</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <span class="text-xs text-slate-400">✅ ১ ক্লিকেই কাস্টমারদের ফোন, ইমেইল ও অর্ডার হিস্ট্রি ডাউনলোড!</span>
+                        <span class="bg-teal-500 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-xl whitespace-nowrap">⬇ এক্সপোর্ট CSV</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. ADVANCED 4-LAYER FRAUD PROTECTION SHIELD -->
+    <section id="fraud-shield" class="py-16 sm:py-24 bg-slate-100 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-4xl mx-auto mb-12 sm:mb-16 reveal">
+                <span class="inline-block bg-rose-100 text-rose-700 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm uppercase">🛡️ ৪ স্তরের আল্টিমেট ফ্রড প্রটেকশন</span>
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mt-4 mb-5 leading-snug md:leading-tight">
+                    আমরা সাধারণ হার্ডওয়্যার ফিঙ্গারপ্রিন্ট ব্যবহার করি না! <br class="hidden sm:block">
+                    <span class="text-rose-600">আমাদের রয়েছে নিজস্ব SDI, বট হানিট্র্যাপ ও কপি-পেস্ট শিল্ড!</span>
+                </h2>
+                <p class="text-slate-600 text-base sm:text-lg">
+                    বাজারের প্রচলিত প্লাগইনগুলো ব্রাউজার/হার্ডওয়্যার ফিঙ্গারপ্রিন্ট ব্যবহার করে। এর ফলে আপনি একজন ফেইক অর্ডারকারীকে ব্লক করলে, ওই একই মডেলের ফোন ব্যবহার করা শত শত আসল কাস্টমারও ব্লক হয়ে যায়! দেখুন আমাদের সিস্টেম কেন ১০০% আলাদা:
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 sm:gap-8">
+                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-md border-2 border-indigo-100 hover:border-indigo-500 transition reveal">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-2xl sm:text-3xl mb-5">🧬</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">১. ফিঙ্গারপ্রিন্ট নয়, Smart Device Identifier (SDI)!</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
+                        আমাদের প্লাগইন সাধারণ ফিঙ্গারপ্রিন্টিং ব্যবহার করে না। এটি ইউজারের ব্রাউজার সেশন এবং ডিপ স্টোরেজের ওপর ভিত্তি করে একটি সম্পূর্ণ ইউনিক ও র‍্যান্ডম হিডেন আইডি (যেমন: <code class="bg-slate-100 px-1.5 py-0.5 rounded">_user_4522</code>) জেনারেট করে।
+                    </p>
+                    <div class="p-4 bg-indigo-50 rounded-xl text-xs sm:text-sm font-semibold text-indigo-900 leading-relaxed">
+                        ✅ ফলাফল: আপনি যদি Symphony Z60 বা Redmi Note 12 থেকে আসা কোনো ফেইক অর্ডারকারীকে ব্লক করেন, তবে শুধুমাত্র ওই ব্যক্তির নির্দিষ্ট ডিভাইসটিই আজীবনের জন্য ব্লক হবে। একই মডেলের অন্য কোনো আসল কাস্টমারের অর্ডার করতে বিন্দুমাত্র সমস্যা হবে না!
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-md border-2 border-amber-100 hover:border-amber-500 transition reveal">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl sm:text-3xl mb-5">🍯</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">২. অ্যাডভান্সড বট হানিট্র্যাপ (Bot Honeytrap)</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
+                        কম্পিটিটররা অনেক সময় অটোমেটেড স্ক্রিপ্ট বা বট (Bot) দিয়ে আপনার সাইটে শত শত ভুয়া অর্ডার ঢুকিয়ে পিক্সেল নষ্ট করে দেয়। আমাদের চেকআউটে রয়েছে অদৃশ্য <strong>"হানিট্র্যাপ (Honeytrap)"</strong> ফাঁদ!
+                    </p>
+                    <div class="p-4 bg-amber-50 rounded-xl text-xs sm:text-sm font-semibold text-amber-900 leading-relaxed">
+                        ✅ ফলাফল: সাধারণ মানুষের চোখে এই ফাঁদ দেখা যায় না, কিন্তু কোনো বট বা স্ক্রিপ্ট অর্ডার করতে আসলেই হানিট্র্যাপে আটকে যায় এবং সার্ভার তাকে সাথে সাথে রিজেক্ট করে দেয়!
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-md border-2 border-rose-100 hover:border-rose-500 transition reveal">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-2xl sm:text-3xl mb-5">🚫</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">৩. কপি-পেস্ট ও ইনস্পেক্ট ব্লকার (Anti-Theft)</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
+                        ফেইক অর্ডারকারীরা যাতে স্ক্রিপ্ট কপি-পেস্ট করে বারবার অর্ডার না করতে পারে, সেজন্য রয়েছে বিল্ট-ইন প্রটেকশন।
+                    </p>
+                    <div class="p-4 bg-rose-50 rounded-xl text-xs sm:text-sm font-semibold text-rose-900 leading-relaxed">
+                        ✅ ফলাফল: আপনার checkout পেজের ভেতর কেউ টেক্সট কপি-পেস্ট করতে পারবে না, রাইট-ক্লিক বা ডেভেলপার টুল দিয়ে Fake order করা সম্পূর্ণ বন্ধ থাকবে।
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-md border-2 border-emerald-100 hover:border-emerald-500 transition reveal">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl sm:text-3xl mb-5">🔒</div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-3">৪. IP লোকেশন ডিটেক্টর, কাস্টম স্ট্যাটাস ও ব্ল্যাকলিস্ট</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-4">
+                        কাস্টমারের আইপি ট্র্যাক করে তার লোকাল এরিয়া ও শহর বের করা হয়। এছাড়াও ওয়ার্ডপ্রেসে যুক্ত হবে দুটি স্পেশাল অর্ডার স্ট্যাটাস: <code class="bg-slate-100 px-1.5 py-0.5 rounded">wc-fake-order</code> এবং <code class="bg-slate-100 px-1.5 py-0.5 rounded">wc-returned-order</code>।
+                    </p>
+                    <div class="p-4 bg-emerald-50 rounded-xl text-xs sm:text-sm font-semibold text-emerald-900 leading-relaxed">
+                        ✅ ফলাফল: এক ক্লিকেই যেকোনো ফোন নাম্বার, IP বা SDI ব্ল্যাকলিস্ট করতে পারবেন এবং নাম্বার ভ্যালিডেশন ও কুলডাউন টাইমার ভুয়া অর্ডার আটকে দেবে!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. DYNAMIC MULTI-CUSTOMER VIDEO REVIEWS -->
+    <section id="reviews" class="py-16 sm:py-24 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+                <span class="inline-block bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm uppercase">❤️ বাস্তব প্রমাণ দেখুন</span>
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mt-3 mb-4 leading-snug">আমাদের সার্ভিস নিয়ে ই-কমার্স মালিকরা কী বলছেন?</h2>
+                <p class="text-slate-600 text-base sm:text-lg">যারা ইতিমধ্যে আমাদের সিস্টেম ব্যবহার করে ফেইক অর্ডার ১০০% বন্ধ করেছেন এবং অ্যাড কস্ট (CPR) কমিয়েছেন, তাদের লাইভ ভিডিও রিভিউ দেখুন:</p>
+            </div>
+
+            <div id="reviews-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <div id="load-more-reviews-wrap" class="text-center mt-10 hidden">
+                <button onclick="showAllReviews()" class="px-8 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-lg transition">
+                    ➕ সকল ক্লায়েন্ট রিভিউ একসাথে দেখুন
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. COMPARISON TABLE SECTION -->
+    <section id="compare" class="py-16 sm:py-20 bg-slate-900 text-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-snug">অন্যান্য সাধারণ সেটআপ বনাম আমাদের <span class="text-indigo-400">Backend Pixel Pro সার্ভিস</span></h2>
+                <p class="text-slate-400 text-base sm:text-lg">পার্থক্যটা নিজেই দেখে নিন—কেন আমাদের এই সার্ভিসটি বাংলাদেশের ই-কমার্সের জন্য এক নম্বর:</p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse rounded-2xl overflow-hidden min-w-[600px]">
+                    <thead>
+                        <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
+                            <th class="p-4 sm:p-5 font-bold text-base sm:text-lg">ফিচার ও সুবিধা</th>
+                            <th class="p-4 sm:p-5 font-bold text-base sm:text-lg text-rose-400 bg-slate-800/50">সাধারণ প্লাগইন + GTM সেটআপ</th>
+                            <th class="p-4 sm:p-5 font-bold text-base sm:text-lg text-emerald-400 bg-indigo-950/60">আমাদের কমপ্লিট সার্ভিস</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 text-sm md:text-base">
+                        <tr class="bg-slate-800/30">
+                            <td class="p-4 sm:p-5 font-semibold">ইউনিক ইভেন্ট (`Ordered_Customers_Visit`, `2nd/3rd Visit`)</td>
+                            <td class="p-4 sm:p-5 text-slate-400">❌ নেই (শুধু বেসিক ইভেন্ট পাঠায়)</td>
+                            <td class="p-4 sm:p-5 font-bold text-emerald-400 bg-indigo-950/30">✅ আছে! পুরাতন ক্রেতা ও রিপিট ভিজিটর আলাদাভাবে ট্র্যাক করে</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 sm:p-5 font-semibold">ডিপ প্যারামিটার (`lifetime_order_value`, `visit_count`)</td>
+                            <td class="p-4 sm:p-5 text-slate-400">❌ পাঠাতে পারে না</td>
+                            <td class="p-4 sm:p-5 font-bold text-emerald-400 bg-indigo-950/30">✅ ২৯+ প্যারামিটারসহ কাস্টমারের অতীত অর্ডারের হিসাবও পিক্সেলে যায়</td>
+                        </tr>
+                        <tr class="bg-slate-800/30">
+                            <td class="p-4 sm:p-5 font-semibold">প্রোডাক্ট ও তারিখ অনুযায়ী অর্ডার ডেটা এক্সট্রাকশন</td>
+                            <td class="p-4 sm:p-5 text-slate-400">❌ নেই</td>
+                            <td class="p-4 sm:p-5 font-bold text-emerald-400 bg-indigo-950/30">✅ ১ ক্লিকে যেকোনো প্রোডাক্টের কাস্টমার লিস্ট CSV ডাউনলোড</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 sm:p-5 font-semibold">ফেইক অর্ডার ব্লকিং পদ্ধতি</td>
+                            <td class="p-4 sm:p-5 text-slate-400">❌ হার্ডওয়্যার ফিঙ্গারপ্রিন্ট (একই মডেলের সব ফোন ব্লক হয়ে যায়)</td>
+                            <td class="p-4 sm:p-5 font-bold text-emerald-400 bg-indigo-950/30">✅ নো-ফিঙ্গারপ্রিন্ট SDI প্রযুক্তি + বট হানিট্র্যাপ + কপি-পেস্ট ব্লক</td>
+                        </tr>
+                        <tr class="bg-slate-800/30">
+                            <td class="p-4 sm:p-5 font-semibold">সার্ভার সাইড ট্র্যাকিং (CAPI) খরচ ও স্পিড</td>
+                            <td class="p-4 sm:p-5 text-slate-400">❌ মাসে ১০-২০ ডলার বিল এবং সাইট স্লো হয়ে যায়</td>
+                            <td class="p-4 sm:p-5 font-bold text-emerald-400 bg-indigo-950/30">✅ আজীবন ফ্রি এবং ব্যাকগ্রাউন্ড কিউ থাকায় রকেটের মতো ফাস্ট</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FRONTEND 1-TO-1 MEETING BOOKING SECTION -->
+    <section id="book-meeting" class="py-16 sm:py-24 bg-indigo-950 text-white border-b border-slate-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-10 sm:gap-12 items-center">
+                <div>
+                    <span class="inline-block bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold uppercase">📅 ফ্রি ১-টু-১ লাইভ কনসালটেশন</span>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mt-4 mb-4 leading-snug">
+                        সার্ভিসটি নেওয়ার আগে সরাসরি আমাদের সাথে <span class="text-amber-400">ফ্রি ডেমো মিটিং বুক করুন!</span>
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">
+                        আপনার ওয়েবসাইটে কীভাবে ইউনিক পিক্সেল ডেটা, অর্ডার এক্সট্রাক্টর এবং ফ্রড শিল্ড কাজ করবে তা লাইভ স্ক্রিন শেয়ার করে দেখতে ডানপাশের ফর্ম থেকে আপনার সুবিধাজনক তারিখ ও সময় সিলেক্ট করে মিটিং বুক করুন।
+                    </p>
+                    <ul class="space-y-3 text-sm text-slate-200">
+                        <li class="flex items-start gap-2.5"><span class="shrink-0">✅</span> <span>মিটিং বুক করার সাথে সাথে আমাদের সিস্টেমে ও ইমেইলে স্লট রিজার্ভ হয়ে যাবে।</span></li>
+                        <li class="flex items-start gap-2.5"><span class="shrink-0">✅</span> <span>নির্ধারিত সময়ে আমরা আপনার হোয়াটসঅ্যাপে মিটিং লিংক পাঠিয়ে জয়েন হবো।</span></li>
+                        <li class="flex items-start gap-2.5"><span class="shrink-0">✅</span> <span>আপনার বর্তমান পিক্সেল ও অ্যাড একাউন্টের ফ্রি অডিট করে দেওয়া হবে!</span></li>
+                    </ul>
+                </div>
+
+                <!-- Booking Form Card -->
+                <div class="bg-white text-slate-900 p-6 sm:p-8 rounded-3xl shadow-2xl border-2 border-indigo-400">
+                    <h3 class="text-xl sm:text-2xl font-bold mb-1">আপনার মিটিং স্লট বুক করুন</h3>
+                    <p class="text-xs text-slate-500 mb-6">নিচের তথ্যগুলো দিন, আমরা নির্ধারিত সময়ে আপনার সাথে যোগাযোগ করবো:</p>
+
+                    <form id="meeting-form" onsubmit="submitMeeting(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">আপনার নাম *</label>
+                            <input type="text" id="mtg-name" required placeholder="যেমন: মো: রাকিব হাসান" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:outline-none text-sm">
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">হোয়াটসঅ্যাপ নাম্বার *</label>
+                                <input type="tel" id="mtg-phone" required placeholder="017XXXXXXXX" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">ওয়েবসাইট লিংক (ঐচ্ছিক)</label>
+                                <input type="text" id="mtg-website" placeholder="yourstore.com" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:outline-none text-sm">
+                            </div>
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">মিটিংয়ের তারিখ *</label>
+                                <input type="date" id="mtg-date" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-600 mb-1">পছন্দের সময় *</label>
+                                <select id="mtg-time" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:outline-none text-sm bg-white">
+                                    <option value="">সময় সিলেক্ট করুন</option>
+                                    <option value="সকাল ১১:০০ - ১২:০০">সকাল ১১:০০ - ১২:০০</option>
+                                    <option value="দুপুর ০২:০০ - ০৩:০০">দুপুর ০২:০০ - ০৩:০০</option>
+                                    <option value="বিকাল ০৪:০০ - ০৫:০০">বিকাল ০৪:০০ - ০৫:০০</option>
+                                    <option value="সন্ধ্যা ০৭:০০ - ০৮:০০">সন্ধ্যা ০৭:০০ - ০৮:০০</option>
+                                    <option value="রাত ০৯:০০ - ১০:০০">রাত ০৯:০০ - ১০:০০</option>
+                                    <option value="রাত ১০:০০ - ১১:০০">রাত ১০:০০ - ১১:০০</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-600 mb-1">সংক্ষিপ্ত নোট (ঐচ্ছিক)</label>
+                            <input type="text" id="mtg-note" placeholder="যেমন: ফেইক অর্ডার ও পিক্সেল ট্র্যাকিং নিয়ে কথা বলতে চাই" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:outline-none text-sm">
+                        </div>
+
+                        <button type="submit" id="mtg-submit-btn" class="w-full py-4 rounded-xl gradient-bg hover:opacity-95 text-white font-bold text-base shadow-lg transition">
+                            ✅ মিটিং কনফার্ম করুন
+                        </button>
+                        <div id="mtg-msg" class="hidden text-center p-3 rounded-xl text-sm font-bold"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. SPECIAL LAUNCHING OFFER PRICING SECTION (Fixed Broken Flex Text + 3-Day Evergreen Timer) -->
+    <section id="pricing" class="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10 sm:mb-12">
+                <span class="inline-block bg-rose-100 text-rose-600 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm uppercase">🔥 স্পেশাল লঞ্চিং অফার (মাত্র ৩ দিনের জন্য)</span>
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mt-4 mb-3 leading-snug">একবার পেমেন্ট করুন, আজীবন সার্ভিস পান!</h2>
+                <p class="text-slate-600 text-base sm:text-lg">কোনো মাসিক চার্জ নেই! আমাদের টিম নিজে আপনার ওয়েবসাইটে সবকিছু ১০০% পারফেক্টভাবে সেটআপ করে বুঝিয়ে দেবে।</p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-2xl border-2 border-indigo-600 overflow-hidden">
+                <div class="gradient-bg text-white text-center py-3.5 px-4 font-bold text-sm sm:text-lg tracking-wide">
+                    🚀 স্পেশাল লঞ্চিং অফার — ৩ দিন পরই প্রাইস বেড়ে পুনরায় ৫,৫০০ টাকা হয়ে যাবে!
+                </div>
+
+                <div class="p-6 sm:p-8 md:p-12 grid md:grid-cols-2 gap-8 sm:gap-10 items-center">
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2">কমপ্লিট ডান-ফর-ইউ (Done-For-You) সার্ভিস</h3>
+                        <p class="text-slate-500 text-sm mb-6">আপনাকে কোনো টেকনিক্যাল কাজ করতে হবে না, সব আমরা করে দেবো:</p>
+                        
+                        <!-- Fixed List Items: Wrapped text inside single <span> so bold words never split into columns! -->
+                        <ul class="space-y-3 text-slate-700 font-medium text-sm sm:text-base">
+                            <li class="flex items-start gap-2.5">
+                                <span class="shrink-0 mt-0.5">✅</span>
+                                <span><strong>Backend Pixel Pro</strong> লাইফটাইম কমপ্লিট সেটআপ</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="shrink-0 mt-0.5">✅</span>
+                                <span>ইউনিক ইভেন্ট (<strong>Ordered_Customers_Visit</strong> সহ ১৫+ ইভেন্ট)</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="shrink-0 mt-0.5">✅</span>
+                                <span>২৯+ ডিপ প্যারামিটার (<strong>lifetime_order_value</strong> ও <strong>visit_count</strong>)</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="shrink-0 mt-0.5">✅</span>
+                                <span><strong>প্রোডাক্ট ও তারিখ অনুযায়ী অর্ডার ডেটা এক্সট্রাকশন টুল</strong></span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="shrink-0 mt-0.5">✅</span>
+                                <span>ব্রাউজার ও সার্ভার-সাইড (CAPI) ১০০% ডিডুপ্লিকেশন</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="shrink-0 mt-0.5">✅</span>
+                                <span><strong>নো-ফিঙ্গারপ্রিন্ট SDI</strong> ফেইক অর্ডার ব্লকার ও বট হানিট্র্যাপ</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="shrink-0 mt-0.5">✅</span>
+                                <span>লাইভ অ্যাবানডন্ড কার্ট রিকভারি সিস্টেম</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <span class="shrink-0 mt-0.5">✅</span>
+                                <span>ওয়ান-ক্লিক <strong>ডোমেইন ভেরিফিকেশন, GA4, Clarity ও UTM</strong></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-200 text-center">
+                        <div class="text-slate-500 font-semibold text-sm mb-1">রেগুলার প্রাইস: <span class="line-through text-rose-500 font-bold text-lg">৳৫,৫০০ টাকা</span></div>
+                        <div class="text-xs sm:text-sm text-indigo-600 font-bold mb-1">লঞ্চিং অফার প্রাইস মাত্র:</div>
+                        <div class="text-5xl sm:text-6xl font-extrabold text-slate-900 mb-1">৳৩,৪৯৯</div>
+                        <div class="text-xs font-bold text-slate-500 mb-4">(ওয়ান-টাইম পেমেন্ট • কোনো মাসিক চার্জ নেই)</div>
+                        <div class="money-back-guarantee rounded-2xl p-3.5 mb-5 flex items-center gap-3 text-left">
+                            <div class="guarantee-seal shrink-0 w-11 h-11 rounded-full border-2 border-white flex flex-col items-center justify-center text-white text-center">
+                                <span class="text-base font-extrabold leading-none">৭</span>
+                                <span class="text-[8px] font-bold leading-tight">দিন</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-bold text-emerald-900 leading-relaxed">প্লাগইনটি আপনার সমস্যার সমাধান করতে না পারলে, সেটআপের তারিখ থেকে ৭ দিনের মধ্যে যেকোনো সময় মানি-ব্যাক নিতে পারবেন—নিশ্চিন্তে শুরু করুন!</p>
+                        </div>
+
+                        <!-- 3-Day Evergreen Countdown Box inside Pricing -->
+                        <div class="bg-rose-50 border border-rose-200 rounded-xl p-3 mb-5">
+                            <div class="text-xs font-bold text-rose-600 mb-2">⏰ অফার শেষ হয়ে ৫,৫০০৳ হতে সময় বাকি:</div>
+                            <div class="grid grid-cols-4 gap-1.5 text-center">
+                                <div class="bg-white border border-rose-200 rounded-lg py-1.5">
+                                    <div id="cd-days" class="text-lg sm:text-xl font-extrabold text-slate-900 font-mono">02</div>
+                                    <div class="text-[10px] font-bold text-slate-500">দিন</div>
+                                </div>
+                                <div class="bg-white border border-rose-200 rounded-lg py-1.5">
+                                    <div id="cd-hours" class="text-lg sm:text-xl font-extrabold text-slate-900 font-mono">23</div>
+                                    <div class="text-[10px] font-bold text-slate-500">ঘণ্টা</div>
+                                </div>
+                                <div class="bg-white border border-rose-200 rounded-lg py-1.5">
+                                    <div id="cd-mins" class="text-lg sm:text-xl font-extrabold text-slate-900 font-mono">59</div>
+                                    <div class="text-[10px] font-bold text-slate-500">মিনিট</div>
+                                </div>
+                                <div class="bg-white border border-rose-200 rounded-lg py-1.5">
+                                    <div id="cd-secs" class="text-lg sm:text-xl font-extrabold text-rose-600 font-mono">59</div>
+                                    <div class="text-[10px] font-bold text-slate-500">সেকেন্ড</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <a href="https://wa.me/+8801521771966?text=হ্যালো ভাই, আমি ৩,৪৯৯ টাকার লঞ্চিং অফারে আপনাদের Backend Pixel Pro সার্ভিসটি নিতে চাচ্ছি।" target="_blank" onclick="trackWhatsApp('Pricing Order WhatsApp CTA')" class="w-full py-4 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-base sm:text-lg shadow-lg shadow-emerald-500/30 transition flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+                                <span>হোয়াটসঅ্যাপে অর্ডার করুন</span>
+                            </a>
+                            <a href="#book-meeting" class="w-full py-3.5 px-5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-sm sm:text-base border border-indigo-200 transition flex items-center justify-center gap-2">
+                                📅 আগে ফ্রি মিটিং বুক করুন
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 text-center border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-semibold text-white text-base sm:text-lg mb-2">Backend Pixel Pro — অ্যাডভান্সড ই-কমার্স ট্র্যাকিং, ডেটা এক্সট্রাকশন ও ফ্রড প্রটেকশন সার্ভিস</p>
+            <p class="text-xs sm:text-sm">© ২০২৬ সর্বস্বত্ব সংরক্ষিত। বাংলাদেশের ই-কমার্স উদ্যোক্তাদের জন্য তৈরি ❤️</p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/+8801521771966?text=হ্যালো ভাই, আমি ৩,৪৯৯ টাকার লঞ্চিং অফারে আপনাদের সার্ভিসটি সম্পর্কে জানতে চাই।" target="_blank" onclick="trackWhatsApp('Floating WhatsApp Icon')" class="fixed bottom-5 right-5 z-50 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 sm:p-4 rounded-full shadow-2xl shadow-emerald-600/40 transition transform hover:scale-110 flex items-center justify-center" title="হোয়াটসঅ্যাপে চ্যাট করুন">
+        <svg class="w-7 h-7 sm:w-8 sm:h-8 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+    </a>
+
+    <!-- Sticky 7-Day Money-Back Guarantee Sticker -->
+    <div id="guarantee-sticky" class="guarantee-sticky flex items-start" aria-label="৭ দিনের মানি-ব্যাক গ্যারান্টি">
+        <button id="guarantee-sticky-tab" type="button" class="guarantee-sticky-tab text-white font-bold text-xs" aria-expanded="false">
+            🛡️ ৭ দিনের গ্যারান্টি
+        </button>
+        <div class="guarantee-sticky-panel p-4">
+            <div class="flex items-start justify-between gap-3">
+                <div>
+                    <p class="text-emerald-700 font-extrabold text-base leading-snug">🛡️ ৭ দিনের মানি-ব্যাক গ্যারান্টি</p>
+                    <p class="text-slate-600 text-xs mt-1.5 leading-relaxed">প্লাগইনটি আপনার সমস্যার সমাধান করতে না পারলে, সেটআপের তারিখ থেকে ৭ দিনের মধ্যে যেকোনো সময় মানি-ব্যাক নিতে পারবেন।</p>
+                </div>
+                <button id="guarantee-sticky-close" type="button" class="text-slate-400 hover:text-slate-700 text-lg leading-none" aria-label="বন্ধ করুন">×</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/meta-tracking.js"></script>
+
+    <!-- Frontend Logic: Evergreen 3-Day Countdown, Auto Spotlight, Dynamic Reviews, Meeting Booking & WhatsApp Tracking -->
+    <script>
+        // ০. 3-Day Evergreen Countdown Timer (Per Visitor via localStorage, auto-resets after 3 days)
+        const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+        const STORAGE_KEY = 'bp_pro_launch_offer_end';
+
+        function getOfferDeadline() {
+            let saved = localStorage.getItem(STORAGE_KEY);
+            let now = Date.now();
+            if (!saved || Number(saved) <= now) {
+                let nextDeadline = now + THREE_DAYS_MS;
+                localStorage.setItem(STORAGE_KEY, String(nextDeadline));
+                return nextDeadline;
+            }
+            return Number(saved);
+        }
+
+        function updateEvergreenTimer() {
+            const now = Date.now();
+            let deadline = getOfferDeadline();
+            let diff = deadline - now;
+
+            if (diff <= 0) {
+                deadline = now + THREE_DAYS_MS;
+                localStorage.setItem(STORAGE_KEY, String(deadline));
+                diff = THREE_DAYS_MS;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            const pad = (n) => String(n).padStart(2, '0');
+
+            const topEl = document.getElementById('top-countdown');
+            if (topEl) topEl.innerText = `${pad(d)}d : ${pad(h)}h : ${pad(m)}m : ${pad(s)}s`;
+
+            const dEl = document.getElementById('cd-days');
+            const hEl = document.getElementById('cd-hours');
+            const mEl = document.getElementById('cd-mins');
+            const sEl = document.getElementById('cd-secs');
+
+            if (dEl) dEl.innerText = pad(d);
+            if (hEl) hEl.innerText = pad(h);
+            if (mEl) mEl.innerText = pad(m);
+            if (sEl) sEl.innerText = pad(s);
+        }
+
+        setInterval(updateEvergreenTimer, 1000);
+
+        // ১. Auto-Advancing Feature Spotlight Data (6 Modules)
+        const spotlightData = [
+            {
+                badge: "ফিচার ১/৬ • লাইভ অ্যাবানডন্ড কার্ট রিকভারি",
+                title: "🛒 কাস্টমার অর্ডার না করে পেজ কেটে দিলেও সাথে সাথে নাম ও ফোন নাম্বার চলে আসবে!",
+                desc: "কাস্টমার চেকআউট ফর্মে নাম বা নাম্বার টাইপ করা মাত্রই আমাদের sendBeacon প্রযুক্তি সেটি ক্যাপচার করে। পেজ কেটে দেওয়ার সাথে সাথে প্রোডাক্টের নাম, দাম এবং ফোন নাম্বার আপনার ড্যাশবোর্ডে চলে আসবে। প্রতিদিন কল দিয়ে ১০-১৫টি অতিরিক্ত অর্ডার কনফার্ম করুন বিনা অ্যাড খরচে!"
+            },
+            {
+                badge: "ফিচার ২/৬ • অ্যাডভান্সড অর্ডার ডেটা এক্সট্রাকশন টুল",
+                title: "📥 নির্দিষ্ট প্রোডাক্ট এবং তারিখ অনুযায়ী কাস্টমারদের সম্পূর্ণ ডেটা এক্সট্রাক্ট করুন!",
+                desc: "কোন প্রোডাক্ট কত তারিখ থেকে কত তারিখের মধ্যে কতজন কাস্টমার অর্ডার করেছে—তাদের নাম, ফোন নাম্বার, ইমেইল, লোকেশন এবং অর্ডার ভ্যালু ১ ক্লিকেই CSV/Excel ফাইলে ডাউনলোড করুন। রিটার্গেটিং এবং লুকএলাইক অডিয়েন্স তৈরির জন্য এটি একটি গেম-চেঞ্জার!"
+            },
+            {
+                badge: "ফিচার ৩/৬ • ফার্স্ট-পার্টি সার্ভার CAPI ও স্পিড গ্যারান্টি",
+                title: "⚡ Stape.io-এর মাসিক খরচ ছাড়াই ১০০% অ্যাডব্লকার বাইপাস ও রকেট স্পিড!",
+                desc: "আমাদের কাস্টম এন্ডপয়েন্ট (/wp-json/bp/v1/sync) এবং Action Scheduler ব্যাকগ্রাউন্ড কিউ ব্যবহার করার কারণে ওয়েবসাইটের স্পিড ১ মিলিসেকেন্ডও কমে না। ব্রাউজার ও সার্ভার ইভেন্ট ১০০% ডিডুপ্লিকেশন সহ মেটায় পৌঁছায়।"
+            },
+            {
+                badge: "ফিচার ৪/৬ • ওয়ান-ক্লিক ডোমেইন ভেরিফিকেশন",
+                title: "🌐 থিমের কোডে হাত না দিয়েই ১ ক্লিকে ফেসবুক বিজনেস ডোমেইন ভেরিফিকেশন!",
+                desc: "থিম আপডেট হলে প্রায়ই header.php থেকে ভেরিফিকেশন কোড মুছে যায়। আমাদের প্লাগইনের ডেডিকেটেড বক্সে আপনার Meta Domain Verification ট্যাগ বসিয়ে সেভ করলেই আজীবনের জন্য ডোমেইন ভেরিফাইড থাকবে।"
+            },
+            {
+                badge: "ফিচার ৫/৬ • Microsoft Clarity ও Google Analytics 4",
+                title: "🎥 কাস্টমারের লাইভ স্ক্রিন রেকর্ডিং দেখুন এবং অটোমেটিক GA4 ইভেন্ট সিঙ্ক করুন!",
+                desc: "শুধু Clarity ID এবং GA4 Measurement ID বসিয়ে দিন। কাস্টমার ওয়েবসাইটে ঢুকে কোথায় ক্লিক করছে বা কোথায় আটকে যাচ্ছে তার ভিডিও রেকর্ডিং দেখতে পাবেন এবং সব ই-কমার্স ইভেন্ট অটোমেটিক GA4-এ চলে যাবে।"
+            },
+            {
+                badge: "ফিচার ৬/৬ • অর্ডার মেটাডেটায় UTM ট্র্যাকিং",
+                title: "🎯 প্রতিটি অর্ডার কোন ক্যাম্পেইন, কোন অ্যাডসেট ও কোন অ্যাড থেকে এসেছে তা জানুন!",
+                desc: "প্রতিটি অর্ডারের ভেতরে UTM Campaign, UTM Adset এবং UTM Ad সরাসরি ওয়ার্ডপ্রেস অর্ডার প্যানেলে সেভ হয়ে যায়। ফলে কোন ক্রিয়েটিভ বা অ্যাড থেকে আসল সেল আসছে তা বুঝতে আর কোনো অনুমানের আশ্রয় নিতে হবে না।"
+            }
+        ];
+
+        let currentSpot = 0;
+        let spotProgress = 0;
+        let isSpotPaused = false;
+        const bnNums = ['১', '২', '৩', '৪', '৫', '৬'];
+
+        function renderSpotlight(idx) {
+            currentSpot = idx;
+            spotProgress = 0;
+            const item = spotlightData[idx];
+            document.getElementById('spot-counter').innerText = `${bnNums[idx]}/৬`;
+            document.getElementById('spotlight-body').innerHTML = `
+                <span class="inline-block w-fit bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 px-3 py-1 rounded-lg text-xs font-bold mb-3">${item.badge}</span>
+                <h3 class="text-lg sm:text-xl md:text-3xl font-bold text-white mb-3 leading-snug">${item.title}</h3>
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed">${item.desc}</p>
+            `;
+
+            document.querySelectorAll('.spot-tab').forEach((btn, i) => {
+                if (i === idx) {
+                    btn.className = 'spot-tab px-3 py-2.5 rounded-xl text-xs font-bold text-left border transition gradient-bg text-white border-indigo-400 shadow-lg';
+                } else {
+                    btn.className = 'spot-tab px-3 py-2.5 rounded-xl text-xs font-bold text-left border transition bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700';
+                }
+            });
+        }
+
+        function goToSpotlight(idx) { renderSpotlight(idx); }
+        function nextSpotlight() { renderSpotlight((currentSpot + 1) % spotlightData.length); }
+        function prevSpotlight() { renderSpotlight((currentSpot - 1 + spotlightData.length) % spotlightData.length); }
+        function pauseSpotlight(state) { isSpotPaused = state; }
+
+        setInterval(() => {
+            if (isSpotPaused) return;
+            spotProgress += 2;
+            document.getElementById('spot-progress').style.width = spotProgress + '%';
+            if (spotProgress >= 100) {
+                nextSpotlight();
+            }
+        }, 120);
+
+        // ২. Dynamic Customer Reviews Loader
+        let allReviews = [];
+        let showingAllReviews = false;
+
+        function renderReviews() {
+            const container = document.getElementById('reviews-grid');
+            const list = showingAllReviews ? allReviews : allReviews.slice(0, 3);
+            container.innerHTML = list.map(r => `
+                <div class="gradient-card p-5 rounded-3xl border border-slate-200 shadow-lg hover:shadow-xl transition flex flex-col justify-between">
+                    <div>
+                        <div class="relative pb-[56.25%] h-0 rounded-2xl overflow-hidden bg-slate-900 mb-5">
+                            <iframe loading="lazy" class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${r.youtubeId}" title="${r.name}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div class="flex items-center gap-1 text-amber-400 text-lg mb-2">★★★★★</div>
+                        <h4 class="font-bold text-lg sm:text-xl text-slate-900 mb-2">"${r.headline}"</h4>
+                        <p class="text-sm text-slate-600">${r.comment}</p>
+                    </div>
+                    <p class="text-xs font-bold text-indigo-600 mt-4 pt-3 border-t border-slate-200/60">— ${r.name}, ${r.role}</p>
+                </div>
+            `).join('');
+
+            const moreBtnWrap = document.getElementById('load-more-reviews-wrap');
+            if (allReviews.length > 3 && !showingAllReviews) {
+                moreBtnWrap.classList.remove('hidden');
+            } else {
+                moreBtnWrap.classList.add('hidden');
+            }
+        }
+
+        function showAllReviews() {
+            showingAllReviews = true;
+            renderReviews();
+        }
+
+        async function loadPublicData() {
+            try {
+                const res = await fetch('/api/public-data');
+                const data = await res.json();
+                if (data.reviews && data.reviews.length) {
+                    allReviews = data.reviews;
+                    renderReviews();
+                }
+            } catch (e) {
+                console.error('Could not load dynamic data', e);
+            }
+        }
+
+        // ৩. Auto WhatsApp Click Tracker
+        function trackWhatsApp(source) {
+            try {
+                if (navigator.sendBeacon) {
+                    const blob = new Blob([JSON.stringify({ source })], { type: 'application/json' });
+                    navigator.sendBeacon('/api/track-whatsapp', blob);
+                } else {
+                    fetch('/api/track-whatsapp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ source })
+                    });
+                }
+            } catch (e) {}
+        }
+
+        // ৪. Frontend Meeting Booking Submission
+        async function submitMeeting(e) {
+            e.preventDefault();
+            const btn = document.getElementById('mtg-submit-btn');
+            const msg = document.getElementById('mtg-msg');
+            btn.disabled = true;
+            btn.innerText = 'বুকিং হচ্ছে...';
+
+            const payload = {
+                name: document.getElementById('mtg-name').value,
+                phone: document.getElementById('mtg-phone').value,
+                website: document.getElementById('mtg-website').value,
+                date: document.getElementById('mtg-date').value,
+                time: document.getElementById('mtg-time').value,
+                note: document.getElementById('mtg-note').value
+            };
+
+            try {
+                const res = await fetch('/api/book-meeting', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                msg.classList.remove('hidden', 'bg-rose-100', 'text-rose-700', 'bg-emerald-100', 'text-emerald-800');
+                if (res.ok) {
+                    msg.classList.add('bg-emerald-100', 'text-emerald-800');
+                    msg.innerText = '🎉 অভিনন্দন! আপনার মিটিং বুক হয়েছে। আমরা নির্ধারিত সময়ে হোয়াটসঅ্যাপে যোগাযোগ করবো।';
+                    document.getElementById('meeting-form').reset();
+                } else {
+                    msg.classList.add('bg-rose-100', 'text-rose-700');
+                    msg.innerText = data.error || 'কোথাও সমস্যা হয়েছে, আবার চেষ্টা করুন।';
+                }
+            } catch (err) {
+                msg.classList.remove('hidden');
+                msg.classList.add('bg-rose-100', 'text-rose-700');
+                msg.innerText = 'সার্ভারের সাথে সংযোগ করা যাচ্ছে না।';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = '✅ মিটিং কনফার্ম করুন';
+            }
+        }
+
+        // ৫. Lightweight Scroll Reveal Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateEvergreenTimer();
+            renderSpotlight(0);
+            loadPublicData();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('mtg-date').setAttribute('min', today);
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            const guaranteeSticky = document.getElementById('guarantee-sticky');
+            const guaranteeTab = document.getElementById('guarantee-sticky-tab');
+            const guaranteeClose = document.getElementById('guarantee-sticky-close');
+            const setGuaranteeOpen = (isOpen) => {
+                guaranteeSticky.classList.toggle('is-open', isOpen);
+                guaranteeTab.setAttribute('aria-expanded', String(isOpen));
+            };
+
+            setTimeout(() => {
+                setGuaranteeOpen(true);
+                setTimeout(() => setGuaranteeOpen(false), 5000);
+            }, 2000);
+
+            guaranteeTab.addEventListener('click', () => {
+                setGuaranteeOpen(!guaranteeSticky.classList.contains('is-open'));
+            });
+            guaranteeClose.addEventListener('click', () => setGuaranteeOpen(false));
+            document.addEventListener('click', (event) => {
+                if (!guaranteeSticky.contains(event.target)) {
+                    setGuaranteeOpen(false);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

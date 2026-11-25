@@ -79,11 +79,7 @@
     }
   ],
   "metaTracking": {
-<<<<<<< HEAD
     "enabled": true,
-=======
-    "enabled": false,
->>>>>>> 97757a7ea06f9cd35817f4c9da858d021b98fc99
     "pixelId": "1364021745113504",
     "accessToken": "EAAKOeKxJwGUBTCwuKggWdGAgMqodke0LRqzty2Q5f37zMaLsb7y3lZAyY8JLeGMZAIrBK0SHZBss51hNtHFMZBWhLZCQBpz7wNNHqiZAKyDZCHPiZB9NAApXZBrNURMYtZBEVQfuNvotZBqmiAxlAsZCUgUeVSXwtSTstfmaXLFpohE35uVrrZBbuBFqcLNtuHJR9IwZDZD",
     "testEventCode": "TEST70704",
@@ -94,20 +90,34 @@
     "timeEnabled": true,
     "timeSeconds": 25,
     "whatsappEnabled": true,
-<<<<<<< HEAD
     "meetingEnabled": true,
-=======
->>>>>>> 97757a7ea06f9cd35817f4c9da858d021b98fc99
     "eventNames": {
       "pageView": "PageView",
       "scroll": "50%_Scroll",
       "timeOnPage": "25S_TimeOnPage",
-<<<<<<< HEAD
       "whatsapp": "Wp_Contact",
       "meeting": "Schedule"
-=======
-      "whatsapp": "Wp_Contact"
->>>>>>> 97757a7ea06f9cd35817f4c9da858d021b98fc99
     }
-  }
+  },
+  "metaTrackingEventLog": [
+    {
+      "eventId": "test_evt_1795619132011",
+      "eventName": "PageView",
+      "timestamp": "2026-11-25T15:05:32.809Z",
+      "status": "delivered",
+      "eventSourceUrl": "http://localhost:4567/",
+      "hasFbp": false,
+      "hasFbc": false,
+      "hasPhone": true,
+      "hasEmail": true,
+      "httpStatus": 200,
+      "response": {
+        "events_received": 1,
+        "messages": [
+          "test_event_code \"TEST70704\" does not match an active Test Events session for this dataset and the action source of these events. These events were received, but will not appear in Test Events. Events sent with a test_event_code may be handled as test traffic, so do not include it in production events. To test, open the Test Events tab in Events Manager, choose the action source of these events, and use the code shown there. App events appear only when their user_data matches the person who opened the session."
+        ],
+        "fbtrace_id": "AlE84FBkkVgATu0t_5v4twG"
+      }
+    }
+  ]
 }

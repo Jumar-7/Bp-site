@@ -79,7 +79,7 @@
     }
   ],
   "metaTracking": {
-    "enabled": false,
+    "enabled": true,
     "pixelId": "1364021745113504",
     "accessToken": "EAAKOeKxJwGUBTCwuKggWdGAgMqodke0LRqzty2Q5f37zMaLsb7y3lZAyY8JLeGMZAIrBK0SHZBss51hNtHFMZBWhLZCQBpz7wNNHqiZAKyDZCHPiZB9NAApXZBrNURMYtZBEVQfuNvotZBqmiAxlAsZCUgUeVSXwtSTstfmaXLFpohE35uVrrZBbuBFqcLNtuHJR9IwZDZD",
     "testEventCode": "TEST70704",
@@ -90,11 +90,13 @@
     "timeEnabled": true,
     "timeSeconds": 25,
     "whatsappEnabled": true,
+    "meetingEnabled": true,
     "eventNames": {
       "pageView": "PageView",
       "scroll": "50%_Scroll",
       "timeOnPage": "25S_TimeOnPage",
-      "whatsapp": "Wp_Contact"
+      "whatsapp": "Wp_Contact",
+      "meeting": "Schedule"
     }
   }
 }

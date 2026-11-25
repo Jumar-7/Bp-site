@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -397,4 +398,405 @@
     </script>
     <script src="/admin-meta-tracking.js"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Backend Pixel Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>body { font-family: 'Hind Siliguri', sans-serif; }</style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+        <div class="max-w-md w-full bg-slate-800 border border-slate-700 rounded-3xl p-8 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-bold text-2xl mx-auto mb-3">B</div>
+                <h1 class="text-2xl font-bold text-white">অ্যাডমিন প্যানেল লগইন</h1>
+                <p class="text-xs text-slate-400 mt-1">Backend Pixel Pro — ম্যানেজমেন্ট ড্যাশবোর্ড</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-1">ইউজার আইডি (User ID)</label>
+                    <input type="text" id="login-user" required placeholder="admin" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:border-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-1">পাসওয়ার্ড (Password)</label>
+                    <input type="password" id="login-pass" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:border-indigo-500 focus:outline-none">
+                </div>
+                <div id="login-err" class="hidden text-rose-400 text-sm font-bold text-center"></div>
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition">
+                    🔐 লগইন করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD SCREEN -->
+    <div id="dashboard-screen" class="hidden">
+        <!-- Topbar -->
+        <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white font-bold px-3 py-1 rounded-lg">BP Admin</span>
+                    <span class="font-bold text-lg">ম্যানেজমেন্ট ও সেলস ট্র্যাকার</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="fetchDashboard()" class="px-3.5 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-xs font-bold">🔄 রিফ্রেশ</button>
+                    <a href="/" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold">🌐 সাইট দেখুন</a>
+                    <button onclick="logout()" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold">লগআউট</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+            
+            <!-- 1. KPI OVERVIEW CARDS -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl">
+                    <div class="text-xs font-bold uppercase text-slate-400">মোট ল্যান্ডিং পেজ ভিউ</div>
+                    <div id="stat-views" class="text-4xl font-extrabold text-white mt-2">0</div>
+                    <div class="text-xs text-slate-400 mt-1">অটোমেটিক ট্র্যাকড</div>
+                </div>
+                <div class="bg-slate-800 border border-emerald-500/40 p-6 rounded-2xl">
+                    <div class="text-xs font-bold uppercase text-emerald-400">হোয়াটসঅ্যাপ ক্লিক / মেসেজ</div>
+                    <div id="stat-wa" class="text-4xl font-extrabold text-emerald-400 mt-2">0</div>
+                    <div class="text-xs text-slate-400 mt-1">অটো ক্লিক + ম্যানুয়াল আপডেট</div>
+                </div>
+                <div class="bg-slate-800 border border-indigo-500/40 p-6 rounded-2xl">
+                    <div class="text-xs font-bold uppercase text-indigo-400">মোট মিটিং বুকিং</div>
+                    <div id="stat-meetings" class="text-4xl font-extrabold text-indigo-400 mt-2">0</div>
+                    <div class="text-xs text-slate-400 mt-1">পেন্ডিং: <span id="stat-pending-mtg" class="text-amber-400 font-bold">0</span> টি</div>
+                </div>
+                <div class="bg-slate-800 border border-amber-500/40 p-6 rounded-2xl">
+                    <div class="text-xs font-bold uppercase text-amber-400">মোট সেলস ক্লোজড ও রেভিনিউ</div>
+                    <div class="flex items-baseline gap-2 mt-2">
+                        <span id="stat-sales" class="text-4xl font-extrabold text-amber-400">0</span>
+                        <span class="text-sm text-slate-300">(<span id="stat-rev">৳0</span>)</span>
+                    </div>
+                    <div class="text-xs text-slate-400 mt-1">অটো + ম্যানুয়াল সেলস ট্র্যাকার</div>
+                </div>
+            </div>
+
+            <!-- 2. MEETINGS MANAGEMENT TABLE -->
+            <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6">
+                <h2 class="text-xl font-bold text-white mb-4">📅 বুক করা মিটিংগুলোর তালিকা (সময় অনুযায়ী আপডেট থাকুন)</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-900 text-slate-300 border-b border-slate-700">
+                                <th class="p-3.5">কাস্টমারের নাম ও ফোন</th>
+                                <th class="p-3.5">ওয়েবসাইট ও নোট</th>
+                                <th class="p-3.5">মিটিং তারিখ ও সময়</th>
+                                <th class="p-3.5">বর্তমান স্ট্যাটাস</th>
+                                <th class="p-3.5">অ্যাকশন (স্ট্যাটাস / সেল কনভার্ট)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="meetings-tbody" class="divide-y divide-slate-700"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. MANUAL / AUTO SALES & WHATSAPP COUNTER CONTROL -->
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Add New Sale Manually -->
+                <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6">
+                    <h3 class="text-lg font-bold text-amber-400 mb-2">💰 নতুন সেল ক্লোজ এন্ট্রি করুন (হোয়াটসঅ্যাপ / সরাসরি)</h3>
+                    <p class="text-xs text-slate-400 mb-4">হোয়াটসঅ্যাপে কথা বলে কোনো সেল ক্লোজ করলে এখানে যোগ করুন, অটোমেটিক মোট সেল ও রেভিনিউ বেড়ে যাবে:</p>
+                    <form onsubmit="addManualSale(event)" class="space-y-3 text-sm">
+                        <div class="grid sm:grid-cols-2 gap-3">
+                            <input type="text" id="sale-name" required placeholder="ক্লায়েন্টের নাম" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                            <input type="text" id="sale-phone" placeholder="ফোন নাম্বার" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-3">
+                            <input type="number" id="sale-amount" value="3499" required placeholder="টাকার পরিমাণ (৳)" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                            <select id="sale-source" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                                <option value="WhatsApp Chat">হোয়াটসঅ্যাপ চ্যাট</option>
+                                <option value="Live Meeting">লাইভ মিটিং</option>
+                                <option value="Phone Call">সরাসরি ফোন কল</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold">➕ সেলস রেকর্ড যুক্ত করুন</button>
+                    </form>
+
+                    <!-- Recent Sales List -->
+                    <div class="mt-6 pt-4 border-t border-slate-700">
+                        <h4 class="text-xs font-bold uppercase text-slate-400 mb-2">সাম্প্রতিক ক্লোজড সেলস:</h4>
+                        <div id="sales-list-box" class="space-y-2 max-h-44 overflow-y-auto text-xs"></div>
+                    </div>
+                </div>
+
+                <!-- Direct Counter Override & Recent WhatsApp Clicks -->
+                <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6">
+                    <h3 class="text-lg font-bold text-indigo-400 mb-2">⚙️ ম্যানুয়াল কাউন্টার এডিটর ও হোয়াটসঅ্যাপ লগ</h3>
+                    <p class="text-xs text-slate-400 mb-4">আপনি চাইলে যেকোনো সময় হোয়াটসঅ্যাপ মেসেজ সংখ্যা, মোট সেলস ও রেভিনিউ ম্যানুয়ালি এডিট করতে পারবেন:</p>
+                    <form onsubmit="updateCounters(event)" class="grid sm:grid-cols-3 gap-3 text-sm mb-4">
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">হোয়াটসঅ্যাপ সংখ্যা</label>
+                            <input type="number" id="edit-wa" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">মোট সেলস সংখ্যা</label>
+                            <input type="number" id="edit-sales" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">মোট রেভিনিউ (৳)</label>
+                            <input type="number" id="edit-rev" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                        </div>
+                        <button type="submit" class="sm:col-span-3 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold">💾 কাউন্টার আপডেট করুন</button>
+                    </form>
+
+                    <div class="pt-4 border-t border-slate-700">
+                        <h4 class="text-xs font-bold uppercase text-slate-400 mb-2">সাম্প্রতিক হোয়াটসঅ্যাপ ক্লিক লগ (অটোমেটিক):</h4>
+                        <div id="wa-logs-box" class="space-y-1.5 max-h-40 overflow-y-auto text-xs font-mono"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. DYNAMIC CUSTOMER REVIEWS MANAGER -->
+            <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6">
+                <h3 class="text-xl font-bold text-white mb-2">⭐ কাস্টমার ভিডিও রিভিউ ম্যানেজার (আনলিমিটেড রিভিউ যোগ করুন)</h3>
+                <p class="text-xs text-slate-400 mb-4">এখান থেকে নতুন রিভিউ যোগ করলেই আপনার ল্যান্ডিং পেজে সেটি অটোমেটিক দেখাতে শুরু করবে:</p>
+                <form onsubmit="addReview(event)" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm mb-6">
+                    <input type="text" id="rev-name" required placeholder="ক্লায়েন্টের নাম (যেমন: তানভীর আহমেদ)" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                    <input type="text" id="rev-role" required placeholder="প্রতিষ্ঠানের নাম (যেমন: ওনার, গ্যাজেট হাব)" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                    <input type="text" id="rev-yt" required placeholder="YouTube Video ID (যেমন: dQw4w9WgXcQ)" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                    <input type="text" id="rev-head" required placeholder="শিরোনাম (যেমন: ফেইক অর্ডার একদম বন্ধ!)" class="px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                    <input type="text" id="rev-comment" required placeholder="বিস্তারিত মন্তব্য..." class="sm:col-span-3 px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white">
+                    <button type="submit" class="py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold">➕ রিভিউ যোগ করুন</button>
+                </form>
+
+                <div id="admin-reviews-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        let adminToken = localStorage.getItem('bp_admin_token') || '';
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-user').value;
+            const password = document.getElementById('login-pass').value;
+            const err = document.getElementById('login-err');
+
+            const res = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (res.ok && data.token) {
+                adminToken = data.token;
+                localStorage.setItem('bp_admin_token', adminToken);
+                err.classList.add('hidden');
+                fetchDashboard();
+            } else {
+                err.classList.remove('hidden');
+                err.innerText = data.error || 'লগইন ব্যর্থ হয়েছে!';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('bp_admin_token');
+            adminToken = '';
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        async function fetchDashboard() {
+            if (!adminToken) return;
+            const res = await fetch('/api/admin/dashboard', {
+                headers: { 'Authorization': adminToken }
+            });
+            if (!res.ok) {
+                logout();
+                return;
+            }
+            const db = await res.json();
+            renderDashboard(db);
+        }
+
+        function renderDashboard(db) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+
+            document.getElementById('stat-views').innerText = db.stats.pageViews || 0;
+            document.getElementById('stat-wa').innerText = db.stats.whatsappClicks || 0;
+            document.getElementById('stat-meetings').innerText = db.meetings.length;
+            document.getElementById('stat-pending-mtg').innerText = db.meetings.filter(m => m.status === 'Pending').length;
+            document.getElementById('stat-sales').innerText = db.stats.salesClosed || 0;
+            document.getElementById('stat-rev').innerText = '৳' + (db.stats.totalRevenue || 0).toLocaleString();
+
+            document.getElementById('edit-wa').value = db.stats.whatsappClicks || 0;
+            document.getElementById('edit-sales').value = db.stats.salesClosed || 0;
+            document.getElementById('edit-rev').value = db.stats.totalRevenue || 0;
+
+            // Meetings Table
+            const tbody = document.getElementById('meetings-tbody');
+            if (!db.meetings.length) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">এখনো কোনো মিটিং বুক করা হয়নি।</td></tr>`;
+            } else {
+                tbody.innerHTML = db.meetings.map(m => `
+                    <tr class="hover:bg-slate-700/40">
+                        <td class="p-3.5">
+                            <div class="font-bold text-white">${m.name}</div>
+                            <a href="https://wa.me/88${m.phone.replace(/\D/g,'')}" target="_blank" class="text-emerald-400 text-xs hover:underline">📞 ${m.phone} (WhatsApp)</a>
+                        </td>
+                        <td class="p-3.5">
+                            <div class="text-indigo-300 text-xs">${m.website || 'N/A'}</div>
+                            <div class="text-slate-400 text-xs">${m.note || ''}</div>
+                        </td>
+                        <td class="p-3.5">
+                            <div class="font-bold text-amber-300">${m.date}</div>
+                            <div class="text-xs text-slate-300">${m.time}</div>
+                        </td>
+                        <td class="p-3.5">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${
+                                m.status === 'Sold' ? 'bg-emerald-500/20 text-emerald-300' :
+                                m.status === 'Joined' ? 'bg-blue-500/20 text-blue-300' :
+                                m.status === 'Cancelled' ? 'bg-rose-500/20 text-rose-300' :
+                                'bg-amber-500/20 text-amber-300'
+                            }">${m.status}</span>
+                        </td>
+                        <td class="p-3.5 space-x-1">
+                            <button onclick="setMeetingStatus('${m.id}', 'Joined')" class="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-500 text-xs">Joined</button>
+                            <button onclick="setMeetingStatus('${m.id}', 'Sold')" class="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-xs font-bold">💰 Sold (+৩,৪৯৯)</button>
+                            <button onclick="setMeetingStatus('${m.id}', 'Cancelled')" class="px-2.5 py-1 rounded bg-slate-700 hover:bg-slate-600 text-xs">Cancel</button>
+                            <button onclick="deleteMeeting('${m.id}')" class="px-2 py-1 rounded bg-rose-600/30 text-rose-300 hover:bg-rose-600 text-xs">🗑</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Sales List
+            const salesBox = document.getElementById('sales-list-box');
+            salesBox.innerHTML = (db.salesList || []).map(s => `
+                <div class="flex justify-between items-center bg-slate-900 p-2.5 rounded-lg border border-slate-700">
+                    <span><strong>${s.clientName}</strong> (${s.phone}) — <span class="text-indigo-400">${s.source}</span></span>
+                    <span class="text-emerald-400 font-bold">৳${s.amount}</span>
+                </div>
+            `).join('') || '<div class="text-slate-500">কোনো সেলস হিস্ট্রি নেই।</div>';
+
+            // WhatsApp Logs
+            const waBox = document.getElementById('wa-logs-box');
+            waBox.innerHTML = (db.whatsappLogs || []).map(w => `
+                <div class="flex justify-between bg-slate-900 px-2.5 py-1.5 rounded border border-slate-800">
+                    <span class="text-emerald-400">${w.source}</span>
+                    <span class="text-slate-400">${w.timestamp}</span>
+                </div>
+            `).join('') || '<div class="text-slate-500">এখনো কোনো ক্লিক লগ নেই।</div>';
+
+            // Reviews List
+            const revBox = document.getElementById('admin-reviews-list');
+            revBox.innerHTML = (db.reviews || []).map(r => `
+                <div class="bg-slate-900 p-4 rounded-2xl border border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="font-bold text-white mb-1">${r.headline}</div>
+                        <div class="text-slate-400 mb-2">${r.comment}</div>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800">
+                        <span class="text-indigo-400 font-bold">${r.name} (${r.role})</span>
+                        <button onclick="deleteReview('${r.id}')" class="text-rose-400 hover:underline font-bold">ডিলিট</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function setMeetingStatus(id, status) {
+            const res = await fetch('/api/admin/meeting-status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': adminToken },
+                body: JSON.stringify({ id, status })
+            });
+            const data = await res.json();
+            if (data.db) renderDashboard(data.db);
+        }
+
+        async function deleteMeeting(id) {
+            const res = await fetch('/api/admin/meeting/' + id, {
+                method: 'DELETE',
+                headers: { 'Authorization': adminToken }
+            });
+            const data = await res.json();
+            if (data.db) renderDashboard(data.db);
+        }
+
+        async function addManualSale(e) {
+            e.preventDefault();
+            const payload = {
+                clientName: document.getElementById('sale-name').value,
+                phone: document.getElementById('sale-phone').value,
+                amount: document.getElementById('sale-amount').value,
+                source: document.getElementById('sale-source').value
+            };
+            const res = await fetch('/api/admin/add-sale', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': adminToken },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.db) {
+                renderDashboard(data.db);
+                e.target.reset();
+                document.getElementById('sale-amount').value = 2999;
+            }
+        }
+
+        async function updateCounters(e) {
+            e.preventDefault();
+            const payload = {
+                whatsappClicks: document.getElementById('edit-wa').value,
+                salesClosed: document.getElementById('edit-sales').value,
+                totalRevenue: document.getElementById('edit-rev').value
+            };
+            const res = await fetch('/api/admin/update-counters', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': adminToken },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.db) renderDashboard(data.db);
+        }
+
+        async function addReview(e) {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('rev-name').value,
+                role: document.getElementById('rev-role').value,
+                youtubeId: document.getElementById('rev-yt').value,
+                headline: document.getElementById('rev-head').value,
+                comment: document.getElementById('rev-comment').value
+            };
+            const res = await fetch('/api/admin/reviews', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': adminToken },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.db) {
+                renderDashboard(data.db);
+                e.target.reset();
+            }
+        }
+
+        async function deleteReview(id) {
+            const res = await fetch('/api/admin/reviews/' + id, {
+                method: 'DELETE',
+                headers: { 'Authorization': adminToken }
+            });
+            const data = await res.json();
+            if (data.db) renderDashboard(data.db);
+        }
+
+        if (adminToken) fetchDashboard();
+    </script>
+    <script src="/admin-meta-tracking.js"></script>
+</body>
+>>>>>>> 97757a7ea06f9cd35817f4c9da858d021b98fc99
 </html>

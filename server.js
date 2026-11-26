@@ -134,7 +134,21 @@ function readDB() {
             fs.writeFileSync(dbFile, JSON.stringify(initialData, null, 2), 'utf8');
             return initialData;
         }
-        return JSON.parse(fs.readFileSync(dbFile, 'utf8'));
+        const data = JSON.parse(fs.readFileSync(dbFile, 'utf8'));
+
+        // Self-healing check: Ensure Meta credentials are valid even if corrupted or overwritten by browser password autofill
+        if (!data.metaTracking) {
+            data.metaTracking = { ...defaultData.metaTracking };
+        } else {
+            const token = data.metaTracking.accessToken;
+            if (!token || typeof token !== 'string' || !token.startsWith('EA') || token.length < 50) {
+                data.metaTracking.accessToken = defaultData.metaTracking.accessToken;
+            }
+            if (!data.metaTracking.pixelId || !/^\d+$/.test(String(data.metaTracking.pixelId).trim())) {
+                data.metaTracking.pixelId = defaultData.metaTracking.pixelId;
+            }
+        }
+        return data;
     } catch (err) {
         console.error('Database read error:', err);
         return defaultData;

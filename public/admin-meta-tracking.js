@@ -92,7 +92,7 @@
                                 <span id="mt-token-status" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-700 text-slate-300">চেক করা হচ্ছে</span>
                             </label>
                             <div class="relative">
-                                <input id="mt-token" type="password" autocomplete="off" placeholder="নতুন token দিন অথবা অপরিবর্তিত রাখুন" class="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none text-white text-sm font-mono placeholder-slate-600">
+                                <input id="mt-token" name="mt_capi_token_no_autofill" type="text" autocomplete="new-password" data-lpignore="true" data-1p-ignore="true" placeholder="নতুন token দিন অথবা অপরিবর্তিত রাখুন" class="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none text-white text-sm font-mono placeholder-slate-600" style="-webkit-text-security: disc;">
                                 <button type="button" id="mt-toggle-token-btn" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-white text-xs">👁️</button>
                             </div>
                         </div>
@@ -268,11 +268,12 @@
         if (tokenToggleBtn) {
             tokenToggleBtn.addEventListener('click', () => {
                 const input = document.getElementById('mt-token');
-                if (input.type === 'password') {
-                    input.type = 'text';
+                const isMasked = input.style.webkitTextSecurity !== 'none';
+                if (isMasked) {
+                    input.style.webkitTextSecurity = 'none';
                     tokenToggleBtn.innerText = '🔒';
                 } else {
-                    input.type = 'password';
+                    input.style.webkitTextSecurity = 'disc';
                     tokenToggleBtn.innerText = '👁️';
                 }
             });
@@ -324,11 +325,13 @@
         event.preventDefault();
         const token = localStorage.getItem('bp_admin_token') || '';
         const tokenVal = document.getElementById('mt-token').value.trim();
+        // Protect against accidental browser password manager autofill (e.g. 'bp2026pro')
+        const safeToken = (tokenVal && tokenVal.startsWith('EA') && tokenVal.length > 50) ? tokenVal : '__UNCHANGED__';
 
         const payload = {
             enabled: document.getElementById('mt-enabled').checked,
             pixelId: document.getElementById('mt-pixel').value.trim(),
-            accessToken: tokenVal ? tokenVal : '__UNCHANGED__',
+            accessToken: safeToken,
             testEventCode: document.getElementById('mt-test-code').value.trim(),
             apiVersion: document.getElementById('mt-api-version').value.trim() || 'v21.0',
             pageViewEnabled: document.getElementById('mt-page-enabled').checked,
@@ -440,34 +443,50 @@
                     const isOk = item.status === 'delivered';
                     const isNetwork = item.status === 'network_error';
                     const statusClass = isOk ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' : (isNetwork ? 'text-amber-400 bg-amber-500/10 border-amber-500/30' : 'text-rose-400 bg-rose-500/10 border-rose-500/30');
-                    const statusText = isOk ? 'Delivered (200 OK)' : (item.status || 'Failed');
+                    const statusText = isOk ? 'Delivered (200 OK)' : (item.status === 'failed' ? 'Failed (Meta Error)' : (item.status || 'Failed'));
                     const timeStr = item.timestamp ? new Date(item.timestamp).toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' }) : '';
+                    const errorMsg = item.response?.error?.message || item.message || '';
+                    const metaMessages = Array.isArray(item.response?.messages) ? item.response.messages : [];
+                    const traceId = item.response?.fbtrace_id || item.response?.error?.fbtrace_id || '';
 
                     return `
-                        <div class="bg-slate-900/80 border border-slate-700/60 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-slate-600 transition">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="px-2 py-0.5 rounded text-[11px] font-bold border ${statusClass}">
-                                    ${escapeHtml(item.eventName || 'Event')}
-                                </span>
-                                <span class="text-xs font-mono text-slate-300" title="Event ID">
-                                    ID: ${escapeHtml(item.eventId || 'N/A')}
-                                </span>
-                                ${item.hasPhone ? '<span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-bold" title="Phone Hash Included">Phone ✓</span>' : ''}
-                                ${item.hasEmail ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold" title="Email Hash Included">Email ✓</span>' : ''}
-                                ${item.hasFbp ? '<span class="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-bold" title="fbp Browser ID present">fbp ✓</span>' : ''}
-                                ${item.hasFbc ? '<span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded font-bold" title="fbc Click ID present">fbc ✓</span>' : ''}
-                                ${item.hasIp ? '<span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded" title="Client IP Passed">IP ✓</span>' : ''}
-                                ${item.hasUserAgent ? '<span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded" title="User-Agent Passed">UA ✓</span>' : ''}
-                                ${item.hasExternalId ? '<span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-bold" title="Persistent First-Party ID">UID ✓</span>' : ''}
+                        <div class="bg-slate-900/80 border border-slate-700/60 rounded-xl p-3 hover:border-slate-600 transition space-y-2">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="px-2 py-0.5 rounded text-[11px] font-bold border ${statusClass}">
+                                        ${escapeHtml(item.eventName || 'Event')}
+                                    </span>
+                                    <span class="text-xs font-mono text-slate-300" title="Event ID">
+                                        ID: ${escapeHtml(item.eventId || 'N/A')}
+                                    </span>
+                                    ${item.hasPhone ? '<span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-bold" title="Phone Hash Included">Phone ✓</span>' : ''}
+                                    ${item.hasEmail ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold" title="Email Hash Included">Email ✓</span>' : ''}
+                                    ${item.hasFbp ? '<span class="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-bold" title="fbp Browser ID present">fbp ✓</span>' : ''}
+                                    ${item.hasFbc ? '<span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded font-bold" title="fbc Click ID present">fbc ✓</span>' : ''}
+                                    ${item.hasIp ? '<span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded" title="Client IP Passed">IP ✓</span>' : ''}
+                                    ${item.hasUserAgent ? '<span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded" title="User-Agent Passed">UA ✓</span>' : ''}
+                                    ${item.hasExternalId ? '<span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-bold" title="Persistent First-Party ID">UID ✓</span>' : ''}
+                                </div>
+                                <div class="flex items-center gap-3 text-right">
+                                    <span class="text-[11px] font-bold ${isOk ? 'text-emerald-400' : 'text-rose-400'}">
+                                        ${escapeHtml(statusText)}
+                                    </span>
+                                    <span class="text-[11px] text-slate-500 whitespace-nowrap">
+                                        ${escapeHtml(timeStr)}
+                                    </span>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-3 text-right">
-                                <span class="text-[11px] font-bold ${isOk ? 'text-emerald-400' : 'text-rose-400'}">
-                                    ${escapeHtml(statusText)}
-                                </span>
-                                <span class="text-[11px] text-slate-500 whitespace-nowrap">
-                                    ${escapeHtml(timeStr)}
-                                </span>
-                            </div>
+                            ${errorMsg ? `
+                                <div class="text-[11px] text-rose-300 font-mono bg-rose-950/40 border border-rose-800/40 rounded-lg px-2.5 py-1.5 flex items-center justify-between gap-2">
+                                    <span>⚠️ Meta Error: ${escapeHtml(errorMsg)}</span>
+                                    ${traceId ? `<span class="text-[9px] text-rose-400/80 font-mono">trace: ${escapeHtml(traceId)}</span>` : ''}
+                                </div>
+                            ` : ''}
+                            ${metaMessages.length > 0 ? `
+                                <div class="text-[10px] text-amber-300 font-mono bg-amber-950/40 border border-amber-800/40 rounded-lg px-2.5 py-1 flex items-center gap-1.5">
+                                    <span>ℹ️ Meta: ${escapeHtml(metaMessages.join(' '))}</span>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
                 }).join('');

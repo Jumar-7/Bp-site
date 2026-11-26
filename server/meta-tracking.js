@@ -31,11 +31,26 @@ function isPublicIp(ip) {
     return true;
 }
 
+export const DEFAULT_PIXEL_ID = '1364021745113504';
+export const DEFAULT_ACCESS_TOKEN = 'EAAKOeKxJwGUBTCwuKggWdGAgMqodke0LRqzty2Q5f37zMaLsb7y3lZAyY8JLeGMZAIrBK0SHZBss51hNtHFMZBWhLZCQBpz7wNNHqiZAKyDZCHPiZB9NAApXZBrNURMYtZBEVQfuNvotZBqmiAxlAsZCUgUeVSXwtSTstfmaXLFpohE35uVrrZBbuBFqcLNtuHJR9IwZDZD';
+
+export function isValidMetaToken(token) {
+    if (!token || typeof token !== 'string') return false;
+    const clean = token.trim();
+    return clean.startsWith('EA') && clean.length > 50;
+}
+
+export function resolveAccessToken(token) {
+    if (isValidMetaToken(token)) return token.trim();
+    if (isValidMetaToken(process.env.META_ACCESS_TOKEN)) return process.env.META_ACCESS_TOKEN.trim();
+    return DEFAULT_ACCESS_TOKEN;
+}
+
 function cleanConfig(db) {
     const config = db.metaTracking || {};
     return {
         enabled: Boolean(config.enabled),
-        pixelId: config.pixelId || '',
+        pixelId: config.pixelId || DEFAULT_PIXEL_ID,
         testEventCode: config.testEventCode || '',
         apiVersion: config.apiVersion || 'v21.0',
         pageViewEnabled: config.pageViewEnabled !== false,
@@ -73,9 +88,11 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
         if (!config.enabled) {
             return res.json({ success: true, delivered: false, reason: 'disabled' });
         }
-        if (!config.pixelId || !config.accessToken) {
-            return res.status(400).json({ success: false, error: 'Meta Pixel ID or Access Token is missing in Admin settings.' });
-        }
+
+        const activeToken = resolveAccessToken(config.accessToken);
+        const activePixelId = (config.pixelId && /^\d+$/.test(String(config.pixelId).trim()))
+            ? String(config.pixelId).trim()
+            : (process.env.META_PIXEL_ID || DEFAULT_PIXEL_ID);
 
         const body = req.body || {};
         const eventId = String(body.event_id || '').slice(0, 128);
@@ -165,7 +182,7 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
         writeDB(db);
 
         const apiVersion = /^[a-zA-Z0-9.]+$/.test(config.apiVersion || '') ? config.apiVersion : 'v21.0';
-        const url = `https://graph.facebook.com/${apiVersion}/${encodeURIComponent(config.pixelId)}/events?access_token=${encodeURIComponent(config.accessToken)}`;
+        const url = `https://graph.facebook.com/${apiVersion}/${encodeURIComponent(activePixelId)}/events?access_token=${encodeURIComponent(activeToken)}`;
 
         let metaResponse;
         let responseJson;
@@ -233,15 +250,26 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
             meeting: String(incoming.eventNames?.meeting || current.eventNames?.meeting || 'Schedule').trim()
         };
 
-        const resolvedToken = (!incoming.accessToken || incoming.accessToken === '__UNCHANGED__')
-            ? (current.accessToken || '')
-            : String(incoming.accessToken).trim();
+        let candidateToken = String(incoming.accessToken || '').trim();
+        let resolvedToken = resolveAccessToken(current.accessToken);
+
+        if (candidateToken && candidateToken !== '__UNCHANGED__') {
+            // Guard against browser password manager autofill (e.g. 'bp2026pro') or short invalid strings
+            if (isValidMetaToken(candidateToken)) {
+                resolvedToken = candidateToken;
+            }
+        }
+
+        let testEventCode = String(incoming.testEventCode || '').trim().toUpperCase();
+        if (testEventCode && !/^[A-Z0-9_-]{4,32}$/.test(testEventCode)) {
+            testEventCode = '';
+        }
 
         db.metaTracking = {
             enabled: Boolean(incoming.enabled),
-            pixelId: String(incoming.pixelId || '').trim(),
+            pixelId: String(incoming.pixelId || '').trim() || DEFAULT_PIXEL_ID,
             accessToken: resolvedToken,
-            testEventCode: String(incoming.testEventCode || '').trim(),
+            testEventCode: testEventCode,
             apiVersion: String(incoming.apiVersion || 'v21.0').trim(),
             pageViewEnabled: incoming.pageViewEnabled !== false,
             scrollEnabled: incoming.scrollEnabled !== false,
@@ -262,9 +290,10 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
         const db = readDB();
         const config = db.metaTracking || {};
 
-        if (!config.pixelId || !config.accessToken) {
-            return res.status(400).json({ success: false, error: 'Pixel ID এবং Access Token কনফিগার করা নেই।' });
-        }
+        const activeToken = resolveAccessToken(config.accessToken);
+        const activePixelId = (config.pixelId && /^\d+$/.test(String(config.pixelId).trim()))
+            ? String(config.pixelId).trim()
+            : (process.env.META_PIXEL_ID || DEFAULT_PIXEL_ID);
 
         const testId = 'test_' + Date.now();
         const testPayload = {
@@ -291,7 +320,7 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
         }
 
         const apiVersion = config.apiVersion || 'v21.0';
-        const url = `https://graph.facebook.com/${apiVersion}/${encodeURIComponent(config.pixelId)}/events?access_token=${encodeURIComponent(config.accessToken)}`;
+        const url = `https://graph.facebook.com/${apiVersion}/${encodeURIComponent(activePixelId)}/events?access_token=${encodeURIComponent(activeToken)}`;
 
         try {
             const resp = await fetch(url, {

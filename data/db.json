@@ -82,7 +82,7 @@
     "enabled": true,
     "pixelId": "1364021745113504",
     "accessToken": "EAAKOeKxJwGUBTCwuKggWdGAgMqodke0LRqzty2Q5f37zMaLsb7y3lZAyY8JLeGMZAIrBK0SHZBss51hNtHFMZBWhLZCQBpz7wNNHqiZAKyDZCHPiZB9NAApXZBrNURMYtZBEVQfuNvotZBqmiAxlAsZCUgUeVSXwtSTstfmaXLFpohE35uVrrZBbuBFqcLNtuHJR9IwZDZD",
-    "testEventCode": "",
+    "testEventCode": "TEST46327",
     "apiVersion": "v21.0",
     "pageViewEnabled": true,
     "scrollEnabled": true,
@@ -100,6 +100,26 @@
     }
   },
   "metaTrackingEventLog": [
+    {
+      "eventId": "bp_test_verify_1795686720546",
+      "eventName": "PageView",
+      "timestamp": "2026-11-26T09:52:01.011Z",
+      "status": "delivered",
+      "eventSourceUrl": "https://backend-pixel.vercel.app/",
+      "hasFbp": true,
+      "hasFbc": true,
+      "hasIp": true,
+      "hasUserAgent": true,
+      "hasPhone": false,
+      "hasEmail": false,
+      "hasExternalId": true,
+      "httpStatus": 200,
+      "response": {
+        "events_received": 1,
+        "messages": [],
+        "fbtrace_id": "AVab4RvUTUyoIwIPqDbkzb_"
+      }
+    },
     {
       "eventId": "full_param_test_1795685652545",
       "eventName": "Schedule",

@@ -101,6 +101,23 @@
   },
   "metaTrackingEventLog": [
     {
+      "eventId": "bp_1795679864916_440h1n7",
+      "eventName": "50%_Scroll",
+      "timestamp": "2026-11-26T07:57:45.261Z",
+      "status": "delivered",
+      "eventSourceUrl": "http://localhost:3000/",
+      "hasFbp": true,
+      "hasFbc": false,
+      "hasPhone": false,
+      "hasEmail": false,
+      "httpStatus": 200,
+      "response": {
+        "events_received": 1,
+        "messages": [],
+        "fbtrace_id": "AOT0ptRFmZjx91J_wAHO1ZZ"
+      }
+    },
+    {
       "eventId": "prod_test_1795679398335",
       "eventName": "PageView",
       "timestamp": "2026-11-26T07:49:58.874Z",

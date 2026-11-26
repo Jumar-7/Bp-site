@@ -61,15 +61,15 @@ const defaultData = {
     metaTrackingEventLog: [],
     metaTracking: {
         enabled: true,
-        pixelId: '',
-        accessToken: '',
+        pixelId: '1364021745113504',
+        accessToken: 'EAAKOeKxJwGUBTCwuKggWdGAgMqodke0LRqzty2Q5f37zMaLsb7y3lZAyY8JLeGMZAIrBK0SHZBss51hNtHFMZBWhLZCQBpz7wNNHqiZAKyDZCHPiZB9NAApXZBrNURMYtZBEVQfuNvotZBqmiAxlAsZCUgUeVSXwtSTstfmaXLFpohE35uVrrZBbuBFqcLNtuHJR9IwZDZD',
         testEventCode: '',
         apiVersion: 'v21.0',
         pageViewEnabled: true,
         scrollEnabled: true,
         scrollPercent: 50,
         timeEnabled: true,
-        timeSeconds: 30,
+        timeSeconds: 25,
         whatsappEnabled: true,
         meetingEnabled: true,
         eventNames: {

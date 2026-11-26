@@ -2,6 +2,7 @@
     'use strict';
 
     const firedKeys = new Set();
+    let lastWhatsAppClickTime = 0;
     let trackingConfig = null;
     let configPromise = null;
 
@@ -278,12 +279,17 @@
             }, seconds * 1000);
         }
 
-        // 4. WhatsApp Click Event (Global click listener)
+        // 4. WhatsApp Click Event (Global click listener for any WhatsApp links)
         if (config.whatsappEnabled) {
             const waName = names.whatsapp || 'Wp_Contact';
             document.addEventListener('click', (e) => {
                 const link = e.target && e.target.closest && e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com"]');
                 if (!link) return;
+
+                // Deduplicate: If BPMetaTrack or another handler already processed this click within 2 seconds, ignore
+                const now = Date.now();
+                if (now - lastWhatsAppClickTime < 2000) return;
+                lastWhatsAppClickTime = now;
 
                 const buttonText = (link.innerText || link.textContent || link.title || 'WhatsApp Button').trim().slice(0, 100);
                 dispatchMetaEvent(waName, {
@@ -325,9 +331,15 @@
                 }, userData || {}, null);
             } else if (eventType === 'whatsapp') {
                 if (!trackingConfig.whatsappEnabled) return null;
+
+                // Deduplicate: If global click listener or another handler already processed this click within 2 seconds, ignore
+                const now = Date.now();
+                if (now - lastWhatsAppClickTime < 2000) return null;
+                lastWhatsAppClickTime = now;
+
                 const eventName = names.whatsapp || 'Wp_Contact';
                 return dispatchMetaEvent(eventName, {
-                    content_name: 'WhatsApp Inquiry',
+                    content_name: customData.button_source ? ('WhatsApp Click - ' + customData.button_source) : 'WhatsApp Inquiry',
                     currency: 'BDT',
                     value: 0,
                     ...(customData || {})

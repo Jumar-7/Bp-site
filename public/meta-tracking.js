@@ -27,7 +27,7 @@
         document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAge}; SameSite=Lax`;
     }
 
-    // Helper: Ensure _fbp cookie
+    // Helper: Ensure _fbp cookie (Facebook Browser ID)
     function getOrSetFbp() {
         let fbp = getCookie('_fbp');
         if (!fbp) {
@@ -37,18 +37,38 @@
         return fbp;
     }
 
-    // Helper: Ensure _fbc cookie
+    // Helper: Ensure _fbc cookie (Facebook Click ID from fbclid)
     function getOrSetFbc() {
         let fbc = getCookie('_fbc');
         try {
-            const params = new URLSearchParams(window.location.search);
-            const fbclid = params.get('fbclid');
+            const searchParams = new URLSearchParams(window.location.search);
+            let fbclid = searchParams.get('fbclid') || searchParams.get('FBCLID');
+            if (!fbclid && window.location.hash.includes('fbclid=')) {
+                const hashIndex = window.location.hash.indexOf('fbclid=');
+                const sub = window.location.hash.substring(hashIndex);
+                const hashParams = new URLSearchParams(sub);
+                fbclid = hashParams.get('fbclid') || hashParams.get('FBCLID');
+            }
             if (fbclid) {
                 fbc = `fb.1.${Date.now()}.${fbclid}`;
                 setCookie('_fbc', fbc);
             }
         } catch (e) {}
         return fbc;
+    }
+
+    // Helper: Persistent First-Party Visitor ID (external_id) for high Meta Event Match Quality
+    function getOrCreateExternalId() {
+        try {
+            let uid = localStorage.getItem('bp_uid');
+            if (!uid) {
+                uid = 'uid_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+                localStorage.setItem('bp_uid', uid);
+            }
+            return uid;
+        } catch (e) {
+            return 'uid_' + Date.now();
+        }
     }
 
     // Clean standard custom data to prevent Meta Pixel Helper "Data Advisor" warnings
@@ -103,11 +123,11 @@
 
         if (window.__bpInitialPixelId !== pixelId && !window.__bpExtraPixelInit) {
             window.__bpExtraPixelInit = true;
-            window.fbq('init', pixelId);
+            window.fbq('init', pixelId, { external_id: getOrCreateExternalId() });
         }
     }
 
-    // Core Dual Dispatcher: Browser Pixel + Server CAPI
+    // Core Dual Dispatcher: Browser Pixel + Server CAPI with IDENTICAL event_id and ALL matching parameters
     async function dispatchMetaEvent(eventName, customData = {}, userData = {}, onceKey = null, preAssignedEventId = null, skipBrowser = false) {
         if (!trackingConfig || !trackingConfig.enabled || !trackingConfig.pixelId) {
             return null;
@@ -120,6 +140,9 @@
 
         const eventId = preAssignedEventId || generateEventId('bp');
         const cleanData = getCleanCustomData(eventName, customData);
+        const fbp = getOrSetFbp();
+        const fbc = getOrSetFbc();
+        const externalId = getOrCreateExternalId();
 
         // 1. Browser Meta Pixel firing (if not already fired in <head>)
         if (!skipBrowser && window.fbq) {
@@ -130,22 +153,22 @@
             const isStandard = standardEvents.includes(eventName);
 
             if (isStandard) {
-                // Standard events accept (eventName, customData, { eventID })
                 window.fbq('track', eventName, Object.keys(cleanData).length > 0 ? cleanData : {}, { eventID: eventId });
             } else {
                 window.fbq('trackCustom', eventName, cleanData, { eventID: eventId });
             }
         }
 
-        // 2. Server CAPI collect payload
+        // 2. Server CAPI collect payload with ALL required parameters
         const payload = {
             event_id: eventId,
             event_name: eventName,
             event_source_url: window.location.href,
             custom_data: cleanData,
             user_data: {
-                fbp: getOrSetFbp(),
-                fbc: getOrSetFbc(),
+                fbp: fbp,
+                fbc: fbc,
+                external_id: externalId,
                 phone: userData.phone || userData.ph,
                 email: userData.email || userData.em,
                 name: userData.name || userData.fn
@@ -164,7 +187,7 @@
         return eventId;
     }
 
-    // Fetch config
+    // Fetch config with local fallback
     async function loadConfig() {
         if (configPromise) return configPromise;
         configPromise = fetch('/api/meta-tracking/config', { cache: 'no-store' })
@@ -173,7 +196,24 @@
                 trackingConfig = cfg;
                 return cfg;
             })
-            .catch(() => null);
+            .catch(() => ({
+                enabled: true,
+                pixelId: window.__bpInitialPixelId || '1364021745113504',
+                pageViewEnabled: true,
+                scrollEnabled: true,
+                scrollPercent: 50,
+                timeEnabled: true,
+                timeSeconds: 25,
+                whatsappEnabled: true,
+                meetingEnabled: true,
+                eventNames: {
+                    pageView: 'PageView',
+                    scroll: '50%_Scroll',
+                    timeOnPage: '25S_TimeOnPage',
+                    whatsapp: 'Wp_Contact',
+                    meeting: 'Schedule'
+                }
+            }));
         return configPromise;
     }
 
@@ -184,6 +224,7 @@
         ensureMetaPixel(config.pixelId);
         getOrSetFbp();
         getOrSetFbc();
+        getOrCreateExternalId();
 
         const names = config.eventNames || {};
 
@@ -264,6 +305,18 @@
             if (eventType === 'meeting') {
                 if (!trackingConfig.meetingEnabled) return null;
                 const eventName = names.meeting || 'Schedule';
+
+                // Also update browser pixel with user properties
+                if (window.fbq && userData.phone) {
+                    try {
+                        window.fbq('init', trackingConfig.pixelId, {
+                            ph: userData.phone,
+                            fn: userData.name,
+                            external_id: getOrCreateExternalId()
+                        });
+                    } catch (e) {}
+                }
+
                 return dispatchMetaEvent(eventName, {
                     content_name: '1-to-1 Strategy Meeting',
                     currency: 'BDT',

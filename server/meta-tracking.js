@@ -92,7 +92,7 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
         const rawEventName = String(body.event_name || 'PageView').slice(0, 128);
 
         // Client IP & User Agent detection
-        const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+        const forwarded = String(req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || '').split(',')[0].trim();
         const rawIp = forwarded || req.socket.remoteAddress || '';
         const clientIp = isPublicIp(rawIp) ? rawIp : undefined;
         const userAgent = String(req.headers['user-agent'] || '').slice(0, 500);
@@ -102,6 +102,7 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
         const normalizedPhone = normalizePhone(browserData.ph || browserData.phone);
         const normalizedEmail = browserData.em || browserData.email;
         const firstName = browserData.fn || browserData.name || browserData.first_name;
+        const externalId = browserData.external_id;
 
         const userData = {
             client_ip_address: clientIp,
@@ -110,7 +111,9 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
             fbp: browserData.fbp || undefined,
             em: sha256(normalizedEmail),
             ph: sha256(normalizedPhone),
-            fn: sha256(firstName)
+            fn: sha256(firstName),
+            external_id: sha256(externalId),
+            country: sha256('bd')
         };
         Object.keys(userData).forEach((key) => {
             if (userData[key] === undefined || userData[key] === '') delete userData[key];
@@ -141,7 +144,7 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
             eventPayload.test_event_code = testEventCode;
         }
 
-        // Add pending log entry
+        // Add pending log entry with parameter metrics
         db.metaTrackingEventLog.unshift({
             eventId,
             eventName: rawEventName,
@@ -150,8 +153,11 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
             eventSourceUrl: body.event_source_url || '',
             hasFbp: Boolean(userData.fbp),
             hasFbc: Boolean(userData.fbc),
+            hasIp: Boolean(userData.client_ip_address),
+            hasUserAgent: Boolean(userData.client_user_agent),
             hasPhone: Boolean(userData.ph),
-            hasEmail: Boolean(userData.em)
+            hasEmail: Boolean(userData.em),
+            hasExternalId: Boolean(userData.external_id)
         });
         if (db.metaTrackingEventLog.length > 200) {
             db.metaTrackingEventLog = db.metaTrackingEventLog.slice(0, 200);
@@ -274,7 +280,8 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
                     value: 100
                 },
                 user_data: {
-                    client_user_agent: String(req.headers['user-agent'] || '').slice(0, 500)
+                    client_user_agent: String(req.headers['user-agent'] || '').slice(0, 500),
+                    country: sha256('bd')
                 }
             }]
         };
@@ -301,7 +308,9 @@ export function registerMetaTracking(app, { readDB, writeDB, requireAdmin }) {
                 timestamp: new Date().toISOString(),
                 status: resp.ok ? 'delivered' : 'failed',
                 httpStatus: resp.status,
-                response: data
+                response: data,
+                hasIp: true,
+                hasUserAgent: true
             });
             writeDB(db);
 

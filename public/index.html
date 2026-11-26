@@ -19,6 +19,15 @@
         window.__bpInitialPixelId = '1364021745113504';
         window.__bpPageViewId = 'bp_pv_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
 
+        // Immediate first-party fbc and fbp capture
+        try {
+            var params = new URLSearchParams(window.location.search);
+            var fbclid = params.get('fbclid') || params.get('FBCLID');
+            if (fbclid && !document.cookie.includes('_fbc=')) {
+                document.cookie = '_fbc=fb.1.' + Date.now() + '.' + encodeURIComponent(fbclid) + '; path=/; max-age=7776000; SameSite=Lax';
+            }
+        } catch (e) {}
+
         fbq('init', window.__bpInitialPixelId);
         fbq('track', 'PageView', {}, { eventID: window.__bpPageViewId });
     </script>

@@ -445,16 +445,20 @@
 
                     return `
                         <div class="bg-slate-900/80 border border-slate-700/60 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:border-slate-600 transition">
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-2 flex-wrap">
                                 <span class="px-2 py-0.5 rounded text-[11px] font-bold border ${statusClass}">
                                     ${escapeHtml(item.eventName || 'Event')}
                                 </span>
                                 <span class="text-xs font-mono text-slate-300" title="Event ID">
                                     ID: ${escapeHtml(item.eventId || 'N/A')}
                                 </span>
-                                ${item.hasPhone ? '<span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded" title="Phone Hash Included">Phone ✓</span>' : ''}
-                                ${item.hasFbp ? '<span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded" title="fbp cookie present">fbp</span>' : ''}
-                                ${item.hasFbc ? '<span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded" title="fbc click ID present">fbc</span>' : ''}
+                                ${item.hasPhone ? '<span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-bold" title="Phone Hash Included">Phone ✓</span>' : ''}
+                                ${item.hasEmail ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold" title="Email Hash Included">Email ✓</span>' : ''}
+                                ${item.hasFbp ? '<span class="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-bold" title="fbp Browser ID present">fbp ✓</span>' : ''}
+                                ${item.hasFbc ? '<span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded font-bold" title="fbc Click ID present">fbc ✓</span>' : ''}
+                                ${item.hasIp ? '<span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded" title="Client IP Passed">IP ✓</span>' : ''}
+                                ${item.hasUserAgent ? '<span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded" title="User-Agent Passed">UA ✓</span>' : ''}
+                                ${item.hasExternalId ? '<span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-bold" title="Persistent First-Party ID">UID ✓</span>' : ''}
                             </div>
                             <div class="flex items-center gap-3 text-right">
                                 <span class="text-[11px] font-bold ${isOk ? 'text-emerald-400' : 'text-rose-400'}">

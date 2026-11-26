@@ -101,6 +101,26 @@
   },
   "metaTrackingEventLog": [
     {
+      "eventId": "full_param_test_1795685652545",
+      "eventName": "Schedule",
+      "timestamp": "2026-11-26T09:34:13.137Z",
+      "status": "delivered",
+      "eventSourceUrl": "http://localhost:3000/#book-meeting",
+      "hasFbp": true,
+      "hasFbc": true,
+      "hasIp": false,
+      "hasUserAgent": true,
+      "hasPhone": true,
+      "hasEmail": true,
+      "hasExternalId": true,
+      "httpStatus": 200,
+      "response": {
+        "events_received": 1,
+        "messages": [],
+        "fbtrace_id": "ACv-Fa_neKRr6YIheN65u0I"
+      }
+    },
+    {
       "eventId": "bp_1795679864916_440h1n7",
       "eventName": "50%_Scroll",
       "timestamp": "2026-11-26T07:57:45.261Z",

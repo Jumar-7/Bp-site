@@ -5,13 +5,13 @@
     let trackingConfig = null;
     let configPromise = null;
 
-    // Helper: Generate standard event ID for deduplication
+    // Helper: Generate unique event ID for deduplication
     function generateEventId(prefix) {
-        const rnd = Math.random().toString(36).substring(2, 10);
-        return (prefix || 'evt') + '_' + Date.now() + '_' + rnd;
+        const rnd = Math.random().toString(36).substring(2, 9);
+        return (prefix || 'bp') + '_' + Date.now() + '_' + rnd;
     }
 
-    // Helper: Read cookie cleanly
+    // Helper: Read cookie
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -21,13 +21,13 @@
         return undefined;
     }
 
-    // Helper: Set cookie with SameSite and Max-Age
+    // Helper: Set cookie
     function setCookie(name, value, days = 90) {
         const maxAge = days * 24 * 60 * 60;
         document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAge}; SameSite=Lax`;
     }
 
-    // Helper: Ensure _fbp cookie (Facebook Browser ID)
+    // Helper: Ensure _fbp cookie
     function getOrSetFbp() {
         let fbp = getCookie('_fbp');
         if (!fbp) {
@@ -37,7 +37,7 @@
         return fbp;
     }
 
-    // Helper: Ensure _fbc cookie (Facebook Click ID)
+    // Helper: Ensure _fbc cookie
     function getOrSetFbc() {
         let fbc = getCookie('_fbc');
         try {
@@ -51,60 +51,64 @@
         return fbc;
     }
 
-    // Collect base context parameters
-    function getBaseCustomData(extra = {}) {
+    // Clean standard custom data to prevent Meta Pixel Helper "Data Advisor" warnings
+    function getCleanCustomData(eventName, extra = {}) {
         const params = new URLSearchParams(window.location.search);
-        const screenRes = window.screen ? `${window.screen.width}x${window.screen.height}` : '';
-        const viewport = `${window.innerWidth}x${window.innerHeight}`;
-        const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+        const data = {};
 
-        return {
-            content_name: document.title || 'Backend Pixel Pro',
-            content_category: 'E-learning / IT Services',
-            page_title: document.title,
-            page_location: window.location.href,
-            referrer: document.referrer || '(direct)',
-            device_type: isMobile ? 'mobile' : 'desktop',
-            screen_resolution: screenRes,
-            viewport: viewport,
-            language: navigator.language || 'bn',
-            utm_source: params.get('utm_source') || '',
-            utm_medium: params.get('utm_medium') || '',
-            utm_campaign: params.get('utm_campaign') || '',
-            utm_term: params.get('utm_term') || '',
-            utm_content: params.get('utm_content') || '',
-            fbclid: params.get('fbclid') || '',
-            ...(extra || {})
-        };
+        // Standard properties only
+        if (extra.content_name) data.content_name = extra.content_name;
+        if (extra.content_category) data.content_category = extra.content_category;
+        if (extra.value !== undefined) {
+            data.value = Number(extra.value) || 0;
+            data.currency = extra.currency || 'BDT';
+        }
+
+        // UTM parameters for attribution
+        if (params.get('utm_source')) data.utm_source = params.get('utm_source');
+        if (params.get('utm_medium')) data.utm_medium = params.get('utm_medium');
+        if (params.get('utm_campaign')) data.utm_campaign = params.get('utm_campaign');
+
+        // Merge any other custom event-specific properties (e.g. scroll_depth)
+        Object.keys(extra).forEach(k => {
+            if (!['content_name', 'content_category', 'value', 'currency'].includes(k)) {
+                data[k] = extra[k];
+            }
+        });
+
+        return data;
     }
 
-    // Standard Meta Pixel snippet initialization
-    function initMetaPixel(pixelId) {
-        if (!pixelId || window.__bpPixelInitialized) return;
-        window.__bpPixelInitialized = true;
+    // Ensure fbq initialization if not already in <head>
+    function ensureMetaPixel(pixelId) {
+        if (!pixelId) return;
+        if (!window.fbq) {
+            (function (f, b, e, v, n, t, s) {
+                if (f.fbq) return;
+                n = f.fbq = function () {
+                    n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+                };
+                if (!f._fbq) f._fbq = n;
+                n.push = n;
+                n.loaded = true;
+                n.version = '2.0';
+                n.queue = [];
+                t = b.createElement(e);
+                t.async = true;
+                t.src = v;
+                s = b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t, s);
+            })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+        }
 
-        (function (f, b, e, v, n, t, s) {
-            if (f.fbq) return;
-            n = f.fbq = function () {
-                n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-            };
-            if (!f._fbq) f._fbq = n;
-            n.push = n;
-            n.loaded = true;
-            n.version = '2.0';
-            n.queue = [];
-            t = b.createElement(e);
-            t.async = true;
-            t.src = v;
-            s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s);
-        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-
-        window.fbq('init', pixelId);
+        if (window.__bpInitialPixelId !== pixelId && !window.__bpExtraPixelInit) {
+            window.__bpExtraPixelInit = true;
+            window.fbq('init', pixelId);
+        }
     }
 
-    // Core Dual Dispatcher: fires Browser Pixel & Server CAPI with IDENTICAL event_id
-    async function dispatchMetaEvent(eventName, customData = {}, userData = {}, onceKey = null) {
+    // Core Dual Dispatcher: Browser Pixel + Server CAPI
+    async function dispatchMetaEvent(eventName, customData = {}, userData = {}, onceKey = null, preAssignedEventId = null, skipBrowser = false) {
         if (!trackingConfig || !trackingConfig.enabled || !trackingConfig.pixelId) {
             return null;
         }
@@ -114,22 +118,22 @@
             firedKeys.add(onceKey);
         }
 
-        const eventId = generateEventId('bp');
-        const mergedCustomData = getBaseCustomData(customData);
+        const eventId = preAssignedEventId || generateEventId('bp');
+        const cleanData = getCleanCustomData(eventName, customData);
 
-        // 1. Browser Meta Pixel firing
-        if (window.fbq) {
+        // 1. Browser Meta Pixel firing (if not already fired in <head>)
+        if (!skipBrowser && window.fbq) {
             const standardEvents = [
                 'PageView', 'Lead', 'Schedule', 'Contact', 'CompleteRegistration',
                 'Purchase', 'ViewContent', 'AddToCart', 'InitiateCheckout', 'Search'
             ];
             const isStandard = standardEvents.includes(eventName);
 
-            // Pass identical eventID in 4th argument options for deduplication
             if (isStandard) {
-                window.fbq('track', eventName, mergedCustomData, { eventID: eventId });
+                // Standard events accept (eventName, customData, { eventID })
+                window.fbq('track', eventName, Object.keys(cleanData).length > 0 ? cleanData : {}, { eventID: eventId });
             } else {
-                window.fbq('trackCustom', eventName, mergedCustomData, { eventID: eventId });
+                window.fbq('trackCustom', eventName, cleanData, { eventID: eventId });
             }
         }
 
@@ -138,7 +142,7 @@
             event_id: eventId,
             event_name: eventName,
             event_source_url: window.location.href,
-            custom_data: mergedCustomData,
+            custom_data: cleanData,
             user_data: {
                 fbp: getOrSetFbp(),
                 fbc: getOrSetFbc(),
@@ -148,7 +152,6 @@
             }
         };
 
-        // Send to server endpoint
         try {
             await fetch('/api/meta-tracking/collect', {
                 method: 'POST',
@@ -156,14 +159,12 @@
                 body: JSON.stringify(payload),
                 keepalive: true
             });
-        } catch (err) {
-            // Keepalive or silent fail
-        }
+        } catch (err) {}
 
         return eventId;
     }
 
-    // Fetch config and initialize
+    // Fetch config
     async function loadConfig() {
         if (configPromise) return configPromise;
         configPromise = fetch('/api/meta-tracking/config', { cache: 'no-store' })
@@ -180,16 +181,22 @@
         const config = await loadConfig();
         if (!config || !config.enabled || !config.pixelId) return;
 
-        initMetaPixel(config.pixelId);
+        ensureMetaPixel(config.pixelId);
         getOrSetFbp();
         getOrSetFbc();
 
         const names = config.eventNames || {};
 
-        // 1. PageView Event
+        // 1. PageView Event (Pair with <head> pixel or fire new)
         if (config.pageViewEnabled) {
             const pageViewName = names.pageView || 'PageView';
-            dispatchMetaEvent(pageViewName, { event_type: 'page_view' }, {}, 'page_view:' + window.location.pathname);
+            if (window.__bpPageViewId) {
+                // Browser pixel PageView was already fired in <head> with window.__bpPageViewId!
+                // Pair it directly with Server CAPI for 100% Deduplication!
+                dispatchMetaEvent(pageViewName, {}, {}, 'page_view:' + window.location.pathname, window.__bpPageViewId, true);
+            } else {
+                dispatchMetaEvent(pageViewName, {}, {}, 'page_view:' + window.location.pathname);
+            }
         }
 
         // 2. Scroll Depth Event (Configurable threshold %)
@@ -208,7 +215,6 @@
                     scrollTriggered = true;
                     window.removeEventListener('scroll', handleScroll);
                     dispatchMetaEvent(scrollName, {
-                        event_type: 'scroll_depth',
                         scroll_depth_percent: percent,
                         threshold_percent: threshold
                     }, {}, 'scroll:' + window.location.pathname);
@@ -226,7 +232,6 @@
 
             setTimeout(() => {
                 dispatchMetaEvent(timeName, {
-                    event_type: 'time_on_page',
                     time_seconds: seconds
                 }, {}, 'time_on_page:' + window.location.pathname);
             }, seconds * 1000);
@@ -241,8 +246,7 @@
 
                 const buttonText = (link.innerText || link.textContent || link.title || 'WhatsApp Button').trim().slice(0, 100);
                 dispatchMetaEvent(waName, {
-                    event_type: 'whatsapp_click',
-                    button_name: buttonText,
+                    content_name: 'WhatsApp Click - ' + buttonText,
                     destination_url: link.href,
                     value: 0,
                     currency: 'BDT'
@@ -261,7 +265,6 @@
                 if (!trackingConfig.meetingEnabled) return null;
                 const eventName = names.meeting || 'Schedule';
                 return dispatchMetaEvent(eventName, {
-                    event_type: 'meeting_booked',
                     content_name: '1-to-1 Strategy Meeting',
                     currency: 'BDT',
                     value: 3499,
@@ -271,12 +274,12 @@
                 if (!trackingConfig.whatsappEnabled) return null;
                 const eventName = names.whatsapp || 'Wp_Contact';
                 return dispatchMetaEvent(eventName, {
-                    event_type: 'whatsapp_click',
+                    content_name: 'WhatsApp Inquiry',
                     currency: 'BDT',
+                    value: 0,
                     ...(customData || {})
                 }, userData || {}, null);
             } else {
-                // Generic custom event
                 return dispatchMetaEvent(eventType, customData, userData, null);
             }
         };
